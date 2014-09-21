@@ -1,0 +1,20 @@
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+# Remove any trailing whitespace
+# Always indent with spaces
+# 4 space indentation in js files
+[*]
+insert_final_newline = true
+trim_trailing_whitespace = true
+end_of_line = lf
+indent_style = space
+indent_size = 4
+charset = utf-8
+
+# Dont trim as spaces at end of line is line break
+[*.md]
+trim_trailing_whitespace = false
