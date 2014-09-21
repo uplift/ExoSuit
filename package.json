@@ -1,4 +1,24 @@
 {
+  "name": "exosuit",
+  "version": "0.0.1",
+  "description": "A collection of mixins to be used to augment backbone applications",
+  "authors": [
+    "Uplift <git@upliftingcode.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": {
+    "url": ""
+  },
+  "keywords": [
+    "exosuit",
+    "backbone",
+    "mixins"
+  ],
+  "license": "MIT",
+  "private": true,
   "devDependencies": {
     "chai": "^1.9.1",
     "chai-jquery": "^1.2.3",
@@ -19,4 +39,3 @@
     "sinon": "^1.10.3"
   }
 }
-
