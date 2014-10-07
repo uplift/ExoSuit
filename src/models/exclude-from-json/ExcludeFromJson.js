@@ -4,13 +4,12 @@
     if ( typeof define === 'function' && define.amd ) {
         define(
             [
-                'underscore',
-                'exports'
+                'underscore'
             ],
-            function( _, exports ) {
+            function( _ ) {
                 root.ExoSuit = root.ExoSuit || {};
                 root.ExoSuit.Mixins = root.ExoSuit.Mixins || {};
-                root.ExoSuit.Mixins.ExcludeFromJSONMixin = factory( root, exports, _ );
+                return ( root.ExoSuit.Mixins.ExcludeFromJSONMixin = factory( root, {}, _ ) );
             }
         );
     // Next for Node.js or CommonJS.
