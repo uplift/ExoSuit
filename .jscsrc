@@ -45,7 +45,6 @@
     "requireSpacesInsideObjectBrackets"         : "allButNested",
     "requireSpacesInsideArrayBrackets"          : "all",
     "requireSpacesInsideParentheses"            : "allButNested",
-    "disallowDanglingUnderscores"               : true,
     "requireCommaBeforeLineBreak"               : true,
     "requireOperatorBeforeLineBreak"            : [ "?", "=", "+", "-", "/", "*", "==", "===", "!=", "!==", ">", ">=", "<", "<=" ],
     "disallowSpaceAfterPrefixUnaryOperators"    : [ "++", "--", "!", "+", "-", "~" ],
