@@ -1,0 +1,51 @@
+{
+  "name": "exosuit",
+  "version": "0.0.1",
+  "authors": [
+    "Uplift <git@upliftingcode.com>"
+  ],
+  "description": "A collection of mixins to be used to augment backbone applications",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uplift/ExoSuit"
+  },
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "exosuit",
+    "backbone",
+    "mixins"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test/bower_components",
+    "tests/bower_components",
+    "test",
+    "tests",
+    "gulpfile.js"
+  ],
+  "dependencies": {
+    "backbone": "~1.1.2",
+    "underscore": "~1.7.0"
+  },
+  "devDependencies": {
+    "mocha": "~1.21.4",
+    "chai": "~1.9.2",
+    "jquery": "~2.1.1",
+    "sinon": "http://sinonjs.org/releases/sinon-1.9.0.js",
+    "chai-jquery": "~1.2.2",
+    "requirejs": "~2.1.15"
+  },
+  "exportsOverride": {
+    "sinon": {
+      "js": "index.js"
+    }
+  }
+}
