@@ -12,6 +12,9 @@
   "bugs": {
     "url": "https://github.com/uplift/ExoSuit/issues"
   },
+  "scripts": {
+    "test": "gulp test-node"
+  },
   "main": "index.js",
   "keywords": [
     "exosuit",
@@ -42,6 +45,7 @@
     "karma-jquery": "^0.1.0",
     "karma-mocha": "^0.1.9",
     "karma-opera-launcher": "^0.1.0",
+    "karma-requirejs": "^0.2.2",
     "karma-safari-launcher": "^0.1.1",
     "karma-sinon": "^1.0.3",
     "mocha": "^1.21.4",
