@@ -7,10 +7,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/uplift/ExoSuit"
   },
   "bugs": {
-    "url": ""
+    "url": "https://github.com/uplift/ExoSuit/issues"
   },
   "keywords": [
     "exosuit",
@@ -37,5 +37,9 @@
     "karma-sinon": "^1.0.3",
     "mocha": "^1.21.4",
     "sinon": "^1.10.3"
+  },
+  "dependencies": {
+    "backbone": "^1.1.2",
+    "underscore": "^1.7.0"
   }
 }
