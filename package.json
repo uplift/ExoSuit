@@ -12,6 +12,7 @@
   "bugs": {
     "url": "https://github.com/uplift/ExoSuit/issues"
   },
+  "main": "index.js",
   "keywords": [
     "exosuit",
     "backbone",
