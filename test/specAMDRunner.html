@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Unit Tests</title>
+        <link rel="stylesheet" href="bower_components/mocha/mocha.css"/>
+    </head>
+    <body>
+        <div id="mocha"></div>
+        <div id="fixtures" style="display:none;"></div>
+        <script src="bower_components/mocha/mocha.js"></script>
+        <script src="bower_components/chai/chai.js"></script>
+        <script>
+            // Chai
+            window.expect = chai.expect;
+
+            // globals mocha
+            mocha.setup( 'bdd' );
+        </script>
+        <script src="bower_components/requirejs/require.js"></script>
+        <!-- Run Specs -->
+        <script src="specAMDRunner.js"></script>
+    </body>
+</html>
