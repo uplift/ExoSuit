@@ -14,6 +14,7 @@ if ( window.__karma__ ) {
 } else {
     baseUrl = '../src';
     deps = [
+        'tests/specs/collections/pagination/ClientPaginationSpec',
         'tests/specs/models/exclude-from-json/ExcludeFromJsonSpec'
     ];
     callback = mocha.run;
@@ -26,7 +27,13 @@ requirejs.config({
         "jquery"            : "../test/bower_components/jquery/dist/jquery",
         "underscore"        : "../test/bower_components/underscore/underscore",
         "backbone"          : "../test/bower_components/backbone/backbone",
+        "sinon"             : "../test/bower_components/sinon/index",
         "tests"             : "../test"
+    },
+    shim: {
+        "sinon": {
+            exports: "sinon"
+        }
     },
     deps: deps,
     callback: function() {
