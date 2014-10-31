@@ -1,4 +1,5 @@
 ( function( root, factory ) {
+    "use strict";
     // Set up appropriately for the environment.
     // Start with AMD.
     if ( typeof define === 'function' && define.amd ) {
@@ -24,6 +25,7 @@
         root.ExoSuit.Mixins.DataBindingMixin = factory( root, {}, root._ );
     }
 }( this, function( root, DataBindingMixin, _ ) {
+    "use strict";
     DataBindingMixin = function() {
         var oldDelegateEvents = this.delegateEvents,
             oldUndelegateEvents = this.undelegateEvents;

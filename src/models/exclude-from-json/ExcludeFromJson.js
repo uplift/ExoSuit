@@ -1,4 +1,5 @@
 ( function( root, factory ) {
+    "use strict";
     // Set up appropriately for the environment.
     // Start with AMD.
     if ( typeof define === 'function' && define.amd ) {
@@ -24,6 +25,7 @@
         root.ExoSuit.Mixins.ExcludeFromJSONMixin = factory( root, {}, root._ );
     }
 }( this, function( root, ExcludeFromJSONMixin, _ ) {
+    "use strict";
     // Flatten a nested object to flat single depth object
     //
     // {

@@ -1,4 +1,5 @@
 ( function( root, factory ) {
+    "use strict";
     // Set up appropriately for the environment.
     // Start with AMD.
     if ( typeof define === 'function' && define.amd ) {
@@ -24,6 +25,7 @@
         root.ExoSuit.Mixins.ClientPaginationMixin = factory( root, {}, root._ );
     }
 }( this, function( root, ClientPaginationMixin, _ ) {
+    "use strict";
     ClientPaginationMixin = function() {
         // Cache current mixin methods to use later
         var oldInitialize = this.initialize,
