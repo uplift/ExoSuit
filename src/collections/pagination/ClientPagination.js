@@ -32,7 +32,7 @@
             oldPagingState = ( this.pagingState || {} ),
             // Set default paging state
             pagingState = {
-                currentPage: 0,
+                currentPage: 1,
                 perPage: 10
             };
 
@@ -56,6 +56,8 @@
 
         // Set number of models shown per page
         this.howManyPerPage = function( perPage ) {
+            var data;
+
             // Make sure passed in argument is a number
             if ( typeof perPage !== 'number' || parseInt( perPage, 10 ) !== perPage ) {
                 throw new Error( 'Per page must be a number' );
@@ -64,18 +66,24 @@
             // Set state
             this.pagingState.perPage = perPage;
 
-            // Auto refresh page date with new state
-            return this.goTo( this.pagingState.currentPage );
+            // Auto refresh page data with new state
+            data = this.goTo( this.pagingState.currentPage );
+
+            // Trigger event for state change
+            this.trigger( "state-change:perPage", data, perPage );
+
+            // Return page data
+            return data;
         };
 
         // Does collection have any previous models from current state
         this.hasPrevious = function() {
-            return this.pagingState.currentPage > 0;
+            return this.pagingState.currentPage > 1;
         };
 
         // Does collection have any more models from current state
         this.hasNext = function() {
-            return ( this.pagingState.currentPage + 1 ) < Math.ceil( this.length / this.pagingState.perPage );
+            return ( this.pagingState.currentPage + 1 ) < this.getMaxPages();
         };
 
         // Shortcut to go to first page
@@ -98,20 +106,24 @@
             return this.goTo( "next" );
         };
 
+        // Get the max number of pages for the current collection size and state
+        this.getMaxPages = function() {
+            return Math.ceil( this.length / this.pagingState.perPage );
+        };
+
         // Go to a specific page in the collection
         this.goTo = function( page ) {
             var collection = this,
                 // Get collection paging state
                 state = this.pagingState,
                 currentPage = state.currentPage,
-                pageLimit = state.perPage,
-                total = this.length,
+                perPage = state.perPage,
                 // Total number of pages for collection size
-                totalPages = Math.ceil( total / pageLimit ) - 1,
+                totalPages = this.getMaxPages(),
                 // Shortcut keywords
                 pageTypes = {
                     "previous": function() {
-                        var page = collection.hasPrevious() ? currentPage - 1 : 0;
+                        var page = collection.hasPrevious() ? currentPage - 1 : 1;
                         return page;
                     },
                     "next": function() {
@@ -119,20 +131,21 @@
                         return page;
                     },
                     "first": function() {
-                        return 0;
+                        return 1;
                     },
                     "last": function() {
                         return totalPages;
                     }
-                };
+                },
+                pageStart, pageLimit, data;
 
             // If page is a number
             if ( typeof page === 'number' ) {
                 // Round number incase of float
                 page = Math.round( page );
                 // No negative numbers allowed, reset to 0
-                if ( page < 0 ) {
-                    page = 0;
+                if ( page < 1 ) {
+                    page = 1;
                 }
                 // Cant be bigger than max page number, reset to max page number
                 if ( page > totalPages ) {
@@ -150,10 +163,19 @@
                 this.pagingState.currentPage = currentPage = pageTypes[ page ]();
             }
 
-            // Return data (not models) from current page to page limit
-            return _.map( this.slice( ( currentPage * pageLimit ), ( currentPage * pageLimit ) + pageLimit ), function( model ) {
+            pageStart = ( currentPage - 1 ) * perPage;
+            pageLimit = pageStart + perPage;
+
+            // Get data (not models) from current page to page limit
+            data = _.map( this.slice( pageStart, pageLimit ), function( model ) {
                 return model.toJSON();
             } );
+
+            // Trigger event for state change
+            this.trigger( "state-change:currentPage", data, currentPage );
+
+            // Return data (not models) from current page to page limit
+            return data;
         };
     };
 

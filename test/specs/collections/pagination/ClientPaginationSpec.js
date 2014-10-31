@@ -87,7 +87,7 @@
                         currentPage : 0
                     }
                 });
-                stub = sinon.stub( collection, "goTo" );
+                stub = sinon.stub( collection, "goTo" ).returns( [ { "hello": "world" }, { "hello": "earth" } ] );
             });
 
             after(function() {
@@ -117,6 +117,15 @@
                 expect( stub.callCount ).to.equal( 1 );
                 expect( stub.calledWith( 0 ) ).to.be.true;
             });
+
+            it("should trigger an event with new model data and perPage value", function ( done ) {
+                collection.on( "state-change:perPage", function( data, perPage ) {
+                    expect( data ).to.deep.equal( [ { "hello": "world" }, { "hello": "earth" } ] );
+                    expect( perPage ).to.equal( 2 );
+                    done();
+                });
+                collection.howManyPerPage( 2 );
+            });
         });
 
         describe('hasPrevious()', function () {
@@ -126,14 +135,16 @@
                 });
             });
 
-            it("should have previous if current page is bigger than zero", function() {
-                collection.pagingState.currentPage = 1;
+            it("should have previous if current page is bigger than one", function() {
+                collection.pagingState.currentPage = 2;
                 expect( collection.hasPrevious() ).to.be.true;
                 collection.pagingState.currentPage = 50;
                 expect( collection.hasPrevious() ).to.be.true;
             });
 
-            it("should not have previous if current page is zero or lower", function() {
+            it("should not have previous if current page is one or lower", function() {
+                collection.pagingState.currentPage = 1;
+                expect( collection.hasPrevious() ).to.be.false;
                 collection.pagingState.currentPage = 0;
                 expect( collection.hasPrevious() ).to.be.false;
                 collection.pagingState.currentPage = -1;
@@ -154,7 +165,7 @@
                 });
             });
 
-            it("should not have next if total is smaller or equal to current page plus per page value", function() {
+            it("should not have next if current page plus one is bigger than max page value", function() {
                 // Add model
                 collection.add( { "hello" : "world" } );
                 expect( collection.hasNext() ).to.be.false;
@@ -249,6 +260,51 @@
             });
         });
 
+        describe('getMaxPages()', function () {
+            beforeEach(function () {
+                collection = new PaginatonCollection(
+                    [
+                        {
+                            "hello": "world"
+                        },
+                        {
+                            "hello": "earth"
+                        },
+                        {
+                            "hello": "planet"
+                        },
+                        {
+                            "hello": "solar system"
+                        },
+                        {
+                            "hello": "galaxy"
+                        },
+                        {
+                            "hello": "universe"
+                        }
+                    ],
+                    {
+                        model: Backbone.Model,
+                        pagingState: {
+                            perPage: 2
+                        }
+                    }
+                );
+            });
+
+            it("should return the max number of pages for the collection based on the total of the collection and per page state", function () {
+                expect( collection.getMaxPages() ).to.equal( 3 );
+                collection.add( { "hello": "me" } );
+                expect( collection.getMaxPages() ).to.equal( 4 );
+                collection.add( { "hello": "you" } );
+                expect( collection.getMaxPages() ).to.equal( 4 );
+                collection.add( { "hello": "everyone" } );
+                expect( collection.getMaxPages() ).to.equal( 5 );
+                collection.pagingState.perPage = 3;
+                expect( collection.getMaxPages() ).to.equal( 3 );
+            });
+        });
+
         describe('goTo()', function () {
             beforeEach(function () {
                 collection = new PaginatonCollection(
@@ -282,36 +338,36 @@
             });
 
             it("should set the current page to the beginning if no page argument is given and return first two models", function () {
-                collection.pagingState.currentPage = 1;
+                collection.pagingState.currentPage = 2;
                 var data = collection.goTo();
-                expect( collection.pagingState.currentPage ).to.equal( 0 );
+                expect( collection.pagingState.currentPage ).to.equal( 1 );
                 expect( data ).to.deep.equal( [ { "hello": "world" }, { "hello": "earth" } ] );
             });
 
-            it("should set the current page to zero if the page argument is 'first' and return first two models", function () {
-                collection.pagingState.currentPage = 1;
+            it("should set the current page to one if the page argument is 'first' and return first two models", function () {
+                collection.pagingState.currentPage = 2;
                 var data = collection.goTo( "first" );
-                expect( collection.pagingState.currentPage ).to.equal( 0 );
+                expect( collection.pagingState.currentPage ).to.equal( 1 );
                 expect( data ).to.deep.equal( [ { "hello": "world" }, { "hello": "earth" } ] );
             });
 
             it("should set the current page to the last page if the page argument is 'last' and return last pages models", function () {
-                collection.pagingState.currentPage = 0;
+                collection.pagingState.currentPage = 1;
                 var data = collection.goTo( "last" );
-                expect( collection.pagingState.currentPage ).to.equal( 2 );
+                expect( collection.pagingState.currentPage ).to.equal( 3 );
                 expect( data ).to.deep.equal( [ { "hello": "galaxy" }, { "hello": "universe" } ] );
                 // Add model to collection to add an extra page
                 collection.add( [ { "hello" : "star" } ] );
-                collection.pagingState.currentPage = 0;
+                collection.pagingState.currentPage = 1;
                 data = collection.goTo( "last" );
-                expect( collection.pagingState.currentPage ).to.equal( 3 );
+                expect( collection.pagingState.currentPage ).to.equal( 4 );
                 expect( data ).to.deep.equal( [ { "hello": "star" } ] );
             });
 
-            it("should set the current page to zero if the page argument is 'previous' and return first two models when collection doesn't have previous models", function () {
-                collection.pagingState.currentPage = 0;
+            it("should set the current page to one if the page argument is 'previous' and return first two models when collection doesn't have previous models", function () {
+                collection.pagingState.currentPage = 1;
                 var data = collection.goTo( "previous" );
-                expect( collection.pagingState.currentPage ).to.equal( 0 );
+                expect( collection.pagingState.currentPage ).to.equal( 1 );
                 expect( data ).to.deep.equal( [ { "hello": "world" }, { "hello": "earth" } ] );
             });
 
@@ -319,49 +375,58 @@
                 collection.pagingState.currentPage = 2;
                 var data = collection.goTo( "previous" );
                 expect( collection.pagingState.currentPage ).to.equal( 1 );
-                expect( data ).to.deep.equal( [ { "hello": "planet" }, { "hello": "solar system" } ] );
+                expect( data ).to.deep.equal( [ { "hello": "world" }, { "hello": "earth" } ] );
             });
 
             it("should set the current page to the current page if page argument is 'next' and return last pages models when collection doesn't have next pages", function () {
-                collection.pagingState.currentPage = 2;
+                collection.pagingState.currentPage = 3;
                 var data = collection.goTo( "next" );
-                expect( collection.pagingState.currentPage ).to.equal( 2 );
+                expect( collection.pagingState.currentPage ).to.equal( 3 );
                 expect( data ).to.deep.equal( [ { "hello": "galaxy" }, { "hello": "universe" } ] );
             });
 
             it("should set the current page to the current page plus one if the page argument is 'next' and return models for the next page when has next models", function () {
-                collection.pagingState.currentPage = 0;
+                collection.pagingState.currentPage = 1;
                 var data = collection.goTo( "next" );
-                expect( collection.pagingState.currentPage ).to.equal( 1 );
+                expect( collection.pagingState.currentPage ).to.equal( 2 );
                 expect( data ).to.deep.equal( [ { "hello": "planet" }, { "hello": "solar system" } ] );
             });
 
             it("should set the current page to zero if the page argument is a non number and isn't a defined page type", function () {
-                collection.pagingState.currentPage = 1;
+                collection.pagingState.currentPage = 2;
                 var data = collection.goTo( "blah" );
-                expect( collection.pagingState.currentPage ).to.equal( 0 );
+                expect( collection.pagingState.currentPage ).to.equal( 1 );
                 expect( data ).to.deep.equal( [ { "hello": "world" }, { "hello": "earth" } ] );
             });
 
             it("should set the current page to zero if the page argument is a negative number", function () {
-                collection.pagingState.currentPage = 1;
+                collection.pagingState.currentPage = 2;
                 var data = collection.goTo( -1 );
-                expect( collection.pagingState.currentPage ).to.equal( 0 );
+                expect( collection.pagingState.currentPage ).to.equal( 1 );
                 expect( data ).to.deep.equal( [ { "hello": "world" }, { "hello": "earth" } ] );
             });
 
             it("should set the current page to max page if the page argument is a number bigger than max page", function () {
-                collection.pagingState.currentPage = 0;
+                collection.pagingState.currentPage = 1;
                 var data = collection.goTo( 3 );
-                expect( collection.pagingState.currentPage ).to.equal( 2 );
+                expect( collection.pagingState.currentPage ).to.equal( 3 );
                 expect( data ).to.deep.equal( [ { "hello": "galaxy" }, { "hello": "universe" } ] );
             });
 
             it("should set the current page to nearest int if the page argument is a float number", function () {
-                collection.pagingState.currentPage = 0;
+                collection.pagingState.currentPage = 1;
                 var data = collection.goTo( 1.5 );
                 expect( collection.pagingState.currentPage ).to.equal( 2 )
-                expect( data ).to.deep.equal( [ { "hello": "galaxy" }, { "hello": "universe" } ] );
+                expect( data ).to.deep.equal( [ { "hello": "planet" }, { "hello": "solar system" } ] );
+            });
+
+            it("should trigger an event with new model data and perPage value", function ( done ) {
+                collection.on( "state-change:currentPage", function( data, currentPage ) {
+                    expect( data ).to.deep.equal( [ { "hello": "galaxy" }, { "hello": "universe" } ] );
+                    expect( currentPage ).to.equal( 3 );
+                    done();
+                });
+                collection.goTo( 3 );
             });
         });
     });
