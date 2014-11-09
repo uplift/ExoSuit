@@ -20,7 +20,6 @@ gulp.task('npm-install', function( cb ) {
 });
 
 gulp.task('test-node', [ 'lint', 'codestyle', 'npm-install' ], function() {
-    // Exclude views as they depend on jQuery which requires a window object which not available in node without a shim i.e. jsdom
     return gulp.src( [ 'test/specs/**/*.js' ], { read: false } )
         .pipe( cover.instrument({
             pattern: [ 'src/**/*' ],
