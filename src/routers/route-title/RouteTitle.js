@@ -39,7 +39,7 @@
         // Remove if later Backbone release supports changes in master
         if ( oldExecute.length === 2 ) {
             this.route = function( route, name, callback ) {
-                if ( !_.isRegExp( route ) ) { route = this._routeToRegExp(route); }
+                if ( !_.isRegExp( route ) ) { route = this._routeToRegExp( route ); }
                 if ( _.isFunction( name ) ) {
                     callback = name;
                     name = '';
@@ -53,7 +53,7 @@
                         router.trigger( 'route', name, args );
                         Backbone.history.trigger( 'route', router, name, args );
                     }
-                });
+                } );
                 return this;
             };
         }
