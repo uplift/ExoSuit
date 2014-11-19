@@ -1,5 +1,6 @@
 var ExoSuit = {
     "Mixins": {
+        "CappedCollectionMixin": require( './src/collections/capped/CappedCollection' ),
         "ClientPaginationMixin": require( './src/collections/pagination/ClientPagination' ),
         "ExcludeFromJSONMixin": require( './src/models/exclude-from-json/ExcludeFromJson' ),
         "GoogleAnalyticsRouteMixin": require( './src/routers/analytics/Google' ),
