@@ -14,6 +14,7 @@ if ( window.__karma__ ) {
 } else {
     baseUrl = '../src';
     deps = [
+        'tests/specs/collections/capped/CappedCollectionSpec',
         'tests/specs/collections/pagination/ClientPaginationSpec',
         'tests/specs/models/exclude-from-json/ExcludeFromJsonSpec',
         'tests/specs/routers/analytics/GoogleSpec',
