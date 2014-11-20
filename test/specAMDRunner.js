@@ -20,7 +20,7 @@ if ( window.__karma__ ) {
         'tests/specs/routers/analytics/GoogleSpec',
         'tests/specs/routers/parse/ParseQueryStringSpec',
         'tests/specs/routers/route-title/RouteTitleSpec',
-        'tests/specs/views/data-binding/DataBindingSpec',
+        'tests/specs/views/data-binding/ModelBindingSpec',
         'tests/specs/views/selectors/SelectorsSpec'
     ];
     callback = mocha.run;

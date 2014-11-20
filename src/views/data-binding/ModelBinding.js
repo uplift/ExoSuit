@@ -10,7 +10,7 @@
             function( _ ) {
                 root.ExoSuit = root.ExoSuit || {};
                 root.ExoSuit.Mixins = root.ExoSuit.Mixins || {};
-                return ( root.ExoSuit.Mixins.DataBindingMixin = factory( root, {}, _ ) );
+                return ( root.ExoSuit.Mixins.ModelBindingMixin = factory( root, {}, _ ) );
             }
         );
     // Next for Node.js or CommonJS.
@@ -22,11 +22,11 @@
     } else {
         root.ExoSuit = root.ExoSuit || {};
         root.ExoSuit.Mixins = root.ExoSuit.Mixins || {};
-        root.ExoSuit.Mixins.DataBindingMixin = factory( root, {}, root._ );
+        root.ExoSuit.Mixins.ModelBindingMixin = factory( root, {}, root._ );
     }
-}( this, function( root, DataBindingMixin, _ ) {
+}( this, function( root, ModelBindingMixin, _ ) {
     "use strict";
-    DataBindingMixin = function() {
+    ModelBindingMixin = function() {
         var oldDelegateEvents = this.delegateEvents,
             oldUndelegateEvents = this.undelegateEvents;
 
@@ -37,11 +37,13 @@
             oldDelegateEvents.call( this, arguments );
             this._bindModelToView();
             this._bindViewToModel();
+            return this;
         };
 
         this.undelegateEvents = function( events ) {
             oldUndelegateEvents.call( this, arguments );
             this._unbindViewFromModel();
+            return this;
         };
 
         this._bindModelToView = function() {
@@ -141,5 +143,5 @@
         };
     };
 
-    return DataBindingMixin;
+    return ModelBindingMixin;
 } ));

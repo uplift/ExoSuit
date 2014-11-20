@@ -6,10 +6,10 @@
             [
                 'backbone',
                 'jquery',
-                'views/data-binding/DataBinding'
+                'views/data-binding/ModelBinding'
             ],
-            function( Backbone, $, DataBindingMixin ) {
-                factory( Backbone, $, root.expect, DataBindingMixin );
+            function( Backbone, $, ModelBindingMixin ) {
+                factory( Backbone, $, root.expect, ModelBindingMixin );
             }
         );
     // Next for Node.js or CommonJS.
@@ -17,9 +17,9 @@
         // Uses jquery which needs window object so don't run these tests in node
     // Finally, as a browser global.
     } else {
-        factory( root.Backbone, root.jQuery, root.expect, root.ExoSuit.Mixins.DataBindingMixin );
+        factory( root.Backbone, root.jQuery, root.expect, root.ExoSuit.Mixins.ModelBindingMixin );
     }
-}( this, function( Backbone, $, expect, DataBindingMixin ) {
+}( this, function( Backbone, $, expect, ModelBindingMixin ) {
     describe('Data Binding View Mixin ', function () {
         var view, BindingView, stub, oldMethodStub;
 
@@ -44,7 +44,7 @@
                 // Create Binding View definition
                 BindingView = Backbone.View.extend();
                 oldMethodStub = sinon.stub( BindingView.prototype, "delegateEvents" );
-                DataBindingMixin.call( BindingView.prototype );
+                ModelBindingMixin.call( BindingView.prototype );
             });
 
             afterEach(function() {
@@ -84,7 +84,7 @@
                 // Create Binding View definition
                 BindingView = Backbone.View.extend();
                 oldMethodStub = sinon.stub( BindingView.prototype, "undelegateEvents" );
-                DataBindingMixin.call( BindingView.prototype );
+                ModelBindingMixin.call( BindingView.prototype );
             });
 
             afterEach(function() {
@@ -116,7 +116,7 @@
                 this.fixture.html( "<div id='binding-el'></div>" );
                 // Create Binding View definition
                 BindingView = Backbone.View.extend();
-                DataBindingMixin.call( BindingView.prototype );
+                ModelBindingMixin.call( BindingView.prototype );
             });
 
             afterEach(function() {
@@ -351,7 +351,7 @@
                 this.fixture.html( "<div id='binding-el'></div>" );
                 // Create Binding View definition
                 BindingView = Backbone.View.extend();
-                DataBindingMixin.call( BindingView.prototype );
+                ModelBindingMixin.call( BindingView.prototype );
             });
 
             afterEach(function() {
@@ -412,7 +412,7 @@
                 this.fixture.html( "<div id='binding-el'></div>" );
                 // Create Binding View definition
                 BindingView = Backbone.View.extend();
-                DataBindingMixin.call( BindingView.prototype );
+                ModelBindingMixin.call( BindingView.prototype );
             });
 
             afterEach(function() {
@@ -533,7 +533,7 @@
                 this.fixture.html( "<div id='binding-el'></div>" );
                 // Create Binding View definition
                 BindingView = Backbone.View.extend();
-                DataBindingMixin.call( BindingView.prototype );
+                ModelBindingMixin.call( BindingView.prototype );
             });
 
             afterEach(function() {
