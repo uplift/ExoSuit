@@ -15,9 +15,7 @@
         );
     // Next for Node.js or CommonJS.
     } else if ( typeof exports !== 'undefined' ) {
-        var Backbone = require( 'backbone' );
-
-        module.exports = factory( root, exports, _ );
+        /* This is a Client side mixin only */
     // Finally, as a browser global.
     } else {
         root.ExoSuit = root.ExoSuit || {};
