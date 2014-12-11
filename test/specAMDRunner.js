@@ -16,6 +16,7 @@ if ( window.__karma__ ) {
     deps = [
         'tests/specs/collections/capped/CappedCollectionSpec',
         'tests/specs/collections/pagination/ClientPaginationSpec',
+        'tests/specs/collections/sort-on-change/SortOnChangeSpec',
         'tests/specs/models/exclude-from-json/ExcludeFromJsonSpec',
         'tests/specs/routers/analytics/GoogleSpec',
         'tests/specs/routers/parse/ParseQueryStringSpec',
