@@ -27,11 +27,22 @@
 }( this, function( root, ModelBindingMixin, _ ) {
     "use strict";
     ModelBindingMixin = function() {
-        var oldDelegateEvents = this.delegateEvents,
+        var oldRender = this.render,
+            oldDelegateEvents = this.delegateEvents,
             oldUndelegateEvents = this.undelegateEvents;
 
         this.excludeBindModelToView = this.excludeBindModelToView || false;
         this.excludeBindViewToModel = this.excludeBindViewToModel || false;
+
+        this.render = !this.overrideRender ? oldRender : function() {
+            if ( oldRender ) {
+                oldRender.apply( this, arguments );
+            }
+            if ( this.model ) {
+                this.onDataChange( this.model.toJSON() );
+            }
+            return this;
+        };
 
         this.delegateEvents = function( events ) {
             oldDelegateEvents.call( this, arguments );
@@ -47,56 +58,83 @@
         };
 
         this._bindModelToView = function() {
-            var i, l, selector, el, changes;
-
             if ( !this.model || this.excludeBindModelToView ) {
                 return;
             }
 
             this.listenTo( this.model, "change", function() {
-                changes = this.model.changedAttributes();
-                for ( var change in changes ) {
-                    if ( this.bindings && this.bindings[ change ] ) {
-                        if ( _.isFunction( this.bindings[ change ] ) ) {
-                            this.bindings[ change ].call( this, change, changes[ change ], changes );
-                            // Bind mapping takes care of how the change is rendered so exit now
-                            return;
-                        } else if ( _.isArray( this.bindings[ change ] ) ) {
-                            selector = this.$( this.bindings[ change ].join( "," ) );
-                        } else {
-                            selector = this.$( this.bindings[ change ] );
-                        }
-                    } else {
-                        selector = this.$( "[data-bind='" + change + "']" );
-                        if ( selector.length === 0 ) {
-                            selector = this.$( "[name='" + change + "']" );
-                        }
-                    }
+                this.onDataChange( this.model.changedAttributes() );
+            } );
+        };
 
-                    for ( i = 0, l = selector.length; i < l; i++ ) {
-                        el = this.$( selector[ i ] );
-                        if ( !this._isDirty( change, changes[ change ], el ) ) {
-                            continue;
-                        }
-                        if ( el.is( ":checkbox" ) ) {
-                            el.prop( "checked", !!changes[ change ] );
-                        } else if ( el.is( ":radio" ) ) {
-                            el.prop( "checked", ( el.val() === changes[ change ] ? true : false ) );
-                        } else if ( el.is( ":input" ) ) {
-                            el.val( changes[ change ] );
-                        } else {
-                            el.text( changes[ change ] );
-                        }
+        this.getBindingSelector = function( change ) {
+            var selector;
+
+            if ( this.bindings && this.bindings[ change ] ) {
+                if ( typeof this.bindings[ change ] === 'object' && !_.isArray( this.bindings[ change ] ) ) {
+                    selector = this.bindings[ change ].bindTo;
+                } else {
+                    selector = this.bindings[ change ];
+                }
+
+                if ( _.isArray( selector ) ) {
+                    selector = selector.join( "," );
+                }
+            }
+
+            if ( !selector ) {
+                selector = "[data-bind='" + change + "'], [name='" + change + "']";
+            }
+
+            return selector;
+        };
+
+        this._getBindingOptions = function( change, element ) {
+            var options = {};
+
+            if ( this.bindings && typeof this.bindings[ change ] === 'object' && !_.isArray( this.bindings[ change ] ) ) {
+                options = this.bindings[ change ];
+            }
+
+            if ( options && options.overrides ) {
+                for ( var override in options.overrides ) {
+                    if ( element.is( override ) ) {
+                        options = _.extend( options, options.overrides[ override ] );
                     }
                 }
-            } );
+            }
+
+            return options;
+        };
+
+        this.onDataChange = function( changes ) {
+            var i, l, selector, el, value, options, optionsArray;
+
+            for ( var change in changes ) {
+                selector = this.getBindingSelector( change );
+                value = changes[ change ];
+                if ( _.isFunction( selector ) ) {
+                    selector.call( this, change, value, changes );
+                    // Bind mapping takes care of how the change is rendered so exit now
+                    return;
+                } else {
+                    selector = this.$( selector );
+                }
+
+                for ( i = 0, l = selector.length; i < l; i++ ) {
+                    el = this.$( selector[ i ] );
+                    if ( !this._isDirty( change, value, el ) ) {
+                        continue;
+                    }
+                    this.setViewData( el, value, change );
+                }
+            }
         };
 
         this._isDirty = function( property, value, element ) {
             var dirtyValue;
             if ( this._dirty && this._dirty[ property ] && element === this._dirty[ property ].el ) {
                 dirtyValue = this._dirty[ property ].value;
-                delete this._dirty[ property ];
                 if ( value === dirtyValue ) {
                     return false;
                 }
@@ -104,8 +142,28 @@
             return true;
         };
 
+        this.setViewData = function( el, value, change ) {
+            var options = this._getBindingOptions( change, el );
+
+            // Convert model value to view value
+            value = options.convert ? options.convert.call( this, value ) : value;
+
+            if ( el.is( ":checkbox" ) ) {
+                el.prop( "checked", !!value );
+            } else if ( el.is( ":radio" ) ) {
+                el.prop( "checked", ( el.val() === value ? true : false ) );
+            } else if ( el.is( ":input" ) ) {
+                el.val( value );
+            } else if ( options.html === true ) {
+                el.html( value );
+            } else {
+                el.text( value );
+            }
+        };
+
         this._bindViewToModel = function() {
-            var selectors = [ "input[data-bind]", "input[name]", "textarea[data-bind]", "textarea[name]", "select[data-bind]", "select[name]" ];
+            var selectors = [ "input[data-bind]", "input[name]", "textarea[data-bind]", "textarea[name]", "select[data-bind]", "select[name]" ],
+                selector;
 
             if ( !this.model || this.excludeBindViewToModel ) {
                 return;
@@ -134,6 +192,11 @@
                     };
 
                     this.model.set( prop, value );
+                    delete this._dirty[ prop ];
+                    // Reset form element to model value if value has changed between view and being set in model e.g. a schema conversion
+                    if ( value !== this.model.get( prop ) ) {
+                        this.setViewData( element, this.model.get( prop ), prop );
+                    }
                 }
             }, this ));
         };

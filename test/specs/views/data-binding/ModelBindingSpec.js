@@ -20,8 +20,8 @@
         factory( root.Backbone, root.jQuery, root.expect, root.ExoSuit.Mixins.ModelBindingMixin );
     }
 }( this, function( Backbone, $, expect, ModelBindingMixin ) {
-    describe('Data Binding View Mixin ', function () {
-        var view, BindingView, stub, oldMethodStub;
+    describe('Model Binding View Mixin ', function () {
+        var view, BindingView, stub, stubTwo, stubThree, oldMethodStub;
 
         before(function() {
             // If karma, add fixtures html
@@ -37,6 +37,51 @@
         after(function() {
             // Empty any DOM created as part of this test suite
             $( "#fixtures" ).empty();
+        });
+
+        describe('render()', function () {
+            afterEach(function() {
+                oldMethodStub.restore();
+                if ( stub ) {
+                    stub.restore();
+                }
+                view.remove();
+            });
+
+            it('should not override render if overrideRender property isnt set', function() {
+                // Create Binding View definition
+                BindingView = Backbone.View.extend({
+                    model : new Backbone.Model(),
+                    initialize : function() {
+                        this.render();
+                    }
+                });
+                oldMethodStub = sinon.stub( BindingView.prototype, "render" );
+                ModelBindingMixin.call( BindingView.prototype );
+                stub = sinon.stub( BindingView.prototype, "onDataChange" );
+                // Create view
+                view = new BindingView();
+                expect( oldMethodStub.called ).to.be.true;
+                expect( stub.called ).to.be.false;
+            });
+
+            it('should override render if overrideRender property is set to true', function() {
+                // Create Binding View definition
+                BindingView = Backbone.View.extend({
+                    model : new Backbone.Model(),
+                    overrideRender : true,
+                    initialize : function() {
+                        this.render();
+                    }
+                });
+                oldMethodStub = sinon.stub( BindingView.prototype, "render" );
+                ModelBindingMixin.call( BindingView.prototype );
+                stub = sinon.stub( BindingView.prototype, "onDataChange" );
+                // Create view
+                view = new BindingView();
+                expect( oldMethodStub.called ).to.be.true;
+                expect( stub.called ).to.be.true;
+            });
         });
 
         describe('delegateEvents()', function () {
@@ -143,206 +188,214 @@
                 expect( stub.called ).to.be.false;
             });
 
-            it('should set model value on input field with model property as data-bind or name attribute when model changes', function() {
-                // Create view
-                view = new BindingView({
-                    el: "#binding-el",
-                    model: new Backbone.Model()
-                });
-                view.$el.html( "<input id='input-one' type='text' data-bind='mypropertyone'>" );
-                expect( view.$( "#input-one" ).val() ).to.equal( "" );
-                view.model.set( "mypropertyone", "hello" );
-                expect( view.$( "#input-one" ).val() ).to.equal( "hello" );
-                view.model.set( "mypropertyone", "world" );
-                expect( view.$( "#input-one" ).val() ).to.equal( "world" );
-
-                view.$el.html( "<input id='input-two' type='text' name='mypropertytwo'>" );
-                expect( view.$( "#input-two" ).val() ).to.equal( "" );
-                view.model.set( "mypropertytwo", "hiya" );
-                expect( view.$( "#input-two" ).val() ).to.equal( "hiya" );
-                view.model.set( "mypropertytwo", "testing" );
-                expect( view.$( "#input-two" ).val() ).to.equal( "testing" );
-
-                view.$el.html( "<textarea id='input-three' name='mypropertythree'></textarea>" );
-                expect( view.$( "#input-three" ).val() ).to.equal( "" );
-                view.model.set( "mypropertythree", "echo" );
-                expect( view.$( "#input-three" ).val() ).to.equal( "echo" );
-                view.model.set( "mypropertythree", "sudo" );
-                expect( view.$( "#input-three" ).val() ).to.equal( "sudo" );
-
-                view.$el.html( "<select id='input-four' name='mypropertyfour'><option value=''></option><option value='1'>One</option><option value='2'>Two</option></select>" );
-                expect( view.$( "#input-four" ).val() ).to.equal( "" );
-                view.model.set( "mypropertyfour", "1" );
-                expect( view.$( "#input-four" ).val() ).to.equal( "1" );
-                view.model.set( "mypropertyfour", "2" );
-                expect( view.$( "#input-four" ).val() ).to.equal( "2" );
-            });
-
-            it('should check/uncheck model value on checkbox field with model property as data-bind or name attribute when model changes', function() {
-                // Create view
-                view = new BindingView({
-                    el: "#binding-el",
-                    model: new Backbone.Model()
-                });
-                view.$el.html( "<input id='input-one' type='checkbox' data-bind='mypropertyone'>" );
-                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.false;
-                view.model.set( "mypropertyone", true );
-                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.true;
-                view.model.set( "mypropertyone", false );
-                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.false;
-                view.model.set( "mypropertyone", "hello" );
-                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.true;
-                view.model.set( "mypropertyone", "" );
-                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.false;
-                view.model.set( "mypropertyone", 1 );
-                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.true;
-                view.model.set( "mypropertyone", 0 );
-                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.false;
-                view.model.set( "mypropertyone", null );
-                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.false;
-                view.model.set( "mypropertyone", undefined );
-                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.false;
-
-                view.$el.html( "<input id='input-two' type='checkbox' name='mypropertytwo'>" );
-                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
-                view.model.set( "mypropertytwo", true );
-                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.true;
-                view.model.set( "mypropertytwo", false );
-                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
-                view.model.set( "mypropertytwo", "hello" );
-                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.true;
-                view.model.set( "mypropertytwo", "" );
-                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
-                view.model.set( "mypropertytwo", 1 );
-                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.true;
-                view.model.set( "mypropertytwo", 0 );
-                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
-                view.model.set( "mypropertytwo", null );
-                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
-                view.model.set( "mypropertytwo", undefined );
-                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
-            });
-
-            it('should check/uncheck model value on radio field with a radio group with model property as data-bind or name attribute when model changes', function() {
-                // Create view
-                view = new BindingView({
-                    el: "#binding-el",
-                    model: new Backbone.Model()
-                });
-                view.$el.html( "<input id='input-one' type='radio' data-bind='mypropertyone' name='groupone' value='one'><input id='input-two' type='radio' data-bind='mypropertyone' name='groupone' value='two'><input id='input-three' type='radio' data-bind='mypropertyone' name='groupone' value='three'>" );
-                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.false;
-                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
-                expect( view.$( "#input-three" ).is( ":checked" ) ).to.be.false;
-                view.model.set( "mypropertyone", "one" );
-                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.true;
-                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
-                expect( view.$( "#input-three" ).is( ":checked" ) ).to.be.false;
-                view.model.set( "mypropertyone", "three" );
-                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.false;
-                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
-                expect( view.$( "#input-three" ).is( ":checked" ) ).to.be.true;
-                view.model.set( "mypropertyone", "unknown" );
-                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.false;
-                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
-                expect( view.$( "#input-three" ).is( ":checked" ) ).to.be.false;
-            });
-
-            it('should display the model value as text on the element if not a form element with model property as data-bind or name attribute when model changes', function() {
-                // Create view
-                view = new BindingView({
-                    el: "#binding-el",
-                    model: new Backbone.Model()
-                });
-                view.$el.html( "<div id='el-one' data-bind='mypropertyone'></div>" );
-                expect( view.$( "#el-one" ).text() ).to.equal( "" );
-                view.model.set( "mypropertyone", "hello" );
-                expect( view.$( "#el-one" ).text() ).to.equal( "hello" );
-                view.model.set( "mypropertyone", "hello world" );
-                expect( view.$( "#el-one" ).text() ).to.equal( "hello world" );
-            });
-
-            it('should not set model value on element if _isDirty is false when model changes', function() {
-                // Create view
-                view = new BindingView({
-                    el: "#binding-el",
-                    model: new Backbone.Model()
-                });
-                stub = sinon.stub( view, "_isDirty" ).returns( false );
-                view.$el.html( "<input id='input-one' type='text' data-bind='mypropertyone' value='hello'>" );
-                expect( view.$( "#input-one" ).val() ).to.equal( "hello" );
-                view.model.set( "mypropertyone", "world" );
-                expect( view.$( "#input-one" ).val() ).to.equal( "hello" );
-            });
-
-            it('should set model value on element if _isDirty is true when model changes', function() {
-                // Create view
-                view = new BindingView({
-                    el: "#binding-el",
-                    model: new Backbone.Model()
-                });
-                stub = sinon.stub( view, "_isDirty" ).returns( true );
-                view.$el.html( "<input id='input-one' type='text' data-bind='mypropertyone' value='hello'>" );
-                expect( view.$( "#input-one" ).val() ).to.equal( "hello" );
-                view.model.set( "mypropertyone", "world" );
-                expect( view.$( "#input-one" ).val() ).to.equal( "world" );
-            });
-
-            it('should update the view if this.bindings has a selector instead of data-bind or name attributes', function() {
-                BindingView.prototype.bindings = {
-                    "newproperty": "#el-one"
+            it('should call onDataChange with changed attributes', function() {
+                var data = {
+                    "propOne" : true,
+                    "propTwo" : "hello world"
                 };
+
+                stub = sinon.stub( BindingView.prototype, "onDataChange" );
                 // Create view
                 view = new BindingView({
-                    el: "#binding-el",
                     model: new Backbone.Model()
                 });
-                view.$el.html( "<div id='el-one'></div>" );
-                expect( view.$( "#el-one" ).text() ).to.equal( "" );
-                view.model.set( "newproperty", "hello world" );
-                expect( view.$( "#el-one" ).text() ).to.equal( "hello world" );
+                view.model.set( data );
+                expect( stub.called ).to.be.true;
+                expect( stub.callCount ).to.equal( 1 );
+                expect( stub.calledWith( data ) ).to.be.true;
+            });
+        });
+
+        describe('getBindingSelector()', function () {
+            beforeEach(function() {
+                this.fixture.html( "<div id='binding-el'></div>" );
+                // Create Binding View definition
+                BindingView = Backbone.View.extend();
+                ModelBindingMixin.call( BindingView.prototype );
             });
 
-            it('should update the view of multiple elements if this.bindings has an array of selectors instead of data-bind or name attributes', function() {
+            afterEach(function() {
+                if ( stub ) {
+                    stub.restore();
+                }
+                view.remove();
+            });
+
+            it('should get default data-bind and name selector if no binding is setup', function() {
+                var selector;
+                view = new BindingView();
+                selector = view.getBindingSelector( "test" );
+                expect( selector ).to.equal( "[data-bind='test'], [name='test']" );
+            });
+
+            it('should get the selector from bindings object if string', function() {
+                var selector;
                 BindingView.prototype.bindings = {
-                    "newproperty": [ "#el-one", "#input-one" ]
+                    test: "#test"
                 };
+                view = new BindingView();
+                selector = view.getBindingSelector( "test" );
+                expect( selector ).to.equal( "#test" );
+            });
+
+            it('should join the selectors from bindings object if array', function() {
+                var selector;
+                BindingView.prototype.bindings = {
+                    test: [ "#test", "#anotherTest" ]
+                };
+                view = new BindingView();
+                selector = view.getBindingSelector( "test" );
+                expect( selector ).to.equal( "#test,#anotherTest" );
+            });
+
+            it('should get the selectors from bindings object if object and has bindTo property', function() {
+                var selector;
+                BindingView.prototype.bindings = {
+                    boom: "#bang",
+                    test: {
+                        bindTo : [ "#test", "#anotherTest" ]
+                    }
+                };
+                view = new BindingView();
+                selector = view.getBindingSelector( "test" );
+                expect( selector ).to.equal( "#test,#anotherTest" );
+                selector = view.getBindingSelector( "boom" );
+                expect( selector ).to.equal( "#bang" );
+            });
+        });
+
+        describe('_getBindingOptions()', function () {
+            beforeEach(function() {
+                this.fixture.html( "<div id='binding-el'></div>" );
+                // Create Binding View definition
+                BindingView = Backbone.View.extend();
+                ModelBindingMixin.call( BindingView.prototype );
+            });
+
+            afterEach(function() {
+                if ( stub ) {
+                    stub.restore();
+                }
+                view.remove();
+            });
+
+            it('should return bindings options as is if bindings is an object and has no overrides', function() {
+                var options = {
+                    html : true
+                };
+                BindingView.prototype.bindings = {
+                    test : options
+                };
+                view = new BindingView();
+                expect( view._getBindingOptions( "test", document.createElement( "div" ) ) ).to.equal( options );
+            });
+
+            it('should merge the default options with any overrides for the element provided', function() {
+                var options = {
+                    html : true
+                };
+                BindingView.prototype.bindings = {
+                    test : {
+                        bindTo: "#test",
+                        html : false,
+                        overrides : {
+                            "#test" : options
+                        }
+                    }
+                };
+                view = new BindingView();
+                expect( view._getBindingOptions( "test", $( "<div id='test'></div>" ) ) ).to.deep.equal( { bindTo: "#test", html : true, overrides : { "#test" : options } } );
+            });
+        });
+
+        describe('onDataChange()', function () {
+            beforeEach(function() {
+                this.fixture.html( "<div id='binding-el'></div>" );
+                // Create Binding View definition
+                BindingView = Backbone.View.extend();
+                ModelBindingMixin.call( BindingView.prototype );
+            });
+
+            afterEach(function() {
+                if ( stub ) {
+                    stub.restore();
+                }
+                if ( stubTwo ) {
+                    stubTwo.restore();
+                }
+                if ( stubThree ) {
+                    stubThree.restore();
+                }
+                view.remove();
+            });
+
+            it('should set view with value when data is passed', function() {
                 // Create view
                 view = new BindingView({
                     el: "#binding-el",
                     model: new Backbone.Model()
                 });
-                view.$el.html( "<div id='el-one'></div><input id='input-one' type='text'>" );
-                expect( view.$( "#el-one" ).text() ).to.equal( "" );
-                expect( view.$( "#input-one" ).val() ).to.equal( "" );
-                view.model.set( "newproperty", "hello world" );
-                expect( view.$( "#el-one" ).text() ).to.equal( "hello world" );
-                expect( view.$( "#input-one" ).val() ).to.equal( "hello world" );
+                stub = sinon.stub( view, "setViewData" );
+                stubTwo = sinon.stub( view, "getBindingSelector" ).returns( "[data-bind='mypropertyone'], [name='mypropertyone']" );
+                view.$el.html( "<input id='input-one' type='text' data-bind='mypropertyone' value='hello'>" );
+                view.onDataChange( { "mypropertyone" : "hello" } );
+                expect( stub.called ).to.be.true;
+                expect( stub.callCount ).to.equal( 1 );
+                expect( stub.calledWith( view.$( document.getElementById( "input-one" ) ), "hello", "mypropertyone" ) ).to.true;
+                view.onDataChange( { "mypropertyone" : "world" } );
+                expect( stub.called ).to.be.true;
+                expect( stub.callCount ).to.equal( 2 );
+                expect( stub.calledWith( view.$( document.getElementById( "input-one" ) ), "world", "mypropertyone" ) ).to.true;
+            });
+
+            it('should not set view with value if _isDirty is false', function() {
+                // Create view
+                view = new BindingView({
+                    el: "#binding-el",
+                    model: new Backbone.Model()
+                });
+                stub = sinon.stub( view, "setViewData" );
+                stubTwo = sinon.stub( view, "_isDirty" ).returns( false );
+                stubThree = sinon.stub( view, "getBindingSelector" ).returns( "[data-bind='mypropertyone'], [name='mypropertyone']" );
+                view.onDataChange( { "mypropertyone" : "world" } );
+                expect( stub.called ).to.false;
+            });
+
+            it('should set model value on element if _isDirty is true', function() {
+                // Create view
+                view = new BindingView({
+                    el: "#binding-el",
+                    model: new Backbone.Model()
+                });
+                stub = sinon.stub( view, "setViewData" );
+                stubTwo = sinon.stub( view, "_isDirty" ).returns( true );
+                view.$el.html( "<input id='input-one' type='text' data-bind='mypropertyone' value='hello'>" );
+                view.onDataChange( { "mypropertyone" : "world" } );
+                expect( stub.called ).to.true;
+                expect( stub.calledWith( view.$( document.getElementById( "input-one" ) ), "world", "mypropertyone" ) ).to.true;
             });
 
             it('should run the bindings function on the view object if this.bindings has a function instead of data-bind or name attributes', function() {
-                BindingView.prototype.bindings = {
-                    "newproperty": function( change, value, changes ) {
-                        var el = this.$( "#input-one" );
-                        el.toggleClass( "tog" );
-                        el.val( value );
-                    }
-                };
+                var changedValue;
                 // Create view
                 view = new BindingView({
                     el: "#binding-el",
                     model: new Backbone.Model()
                 });
-                view.$el.html( "<input id='input-one' type='text'>" );
-                expect( view.$( "#input-one" ).val() ).to.equal( "" );
-                view.model.set( "newproperty", "hello world" );
-                expect( view.$( "#input-one" ).hasClass( "tog" ) ).to.be.true;
-                expect( view.$( "#input-one" ).val() ).to.equal( "hello world" );
-                view.model.set( "newproperty", "testing 123" );
-                expect( view.$( "#input-one" ).hasClass( "tog" ) ).to.be.false;
-                expect( view.$( "#input-one" ).val() ).to.equal( "testing 123" );
-                view.model.set( "newproperty", "goodbye" );
-                expect( view.$( "#input-one" ).hasClass( "tog" ) ).to.be.true;
-                expect( view.$( "#input-one" ).val() ).to.equal( "goodbye" );
+                stub = sinon.stub( view, "getBindingSelector" ).returns( function( change, value, changes ) {
+                    expect( change ).to.equal( "newproperty" );
+                    changedValue = value
+                } );
+                view.onDataChange( { "newproperty" : "hello world" } );
+                expect( stub.called ).to.be.true;
+                expect( stub.callCount ).to.equal( 1 );
+                expect( changedValue ).to.equal( "hello world" );
+                view.onDataChange( { "newproperty" : "testing 123" } );
+                expect( stub.callCount ).to.equal( 2 );
+                expect( changedValue ).to.equal( "testing 123" );
+                view.onDataChange( { "newproperty" : "goodbye" } );
+                expect( stub.callCount ).to.equal( 3 );
+                expect( changedValue ).to.equal( "goodbye" );
             });
         });
 
@@ -373,10 +426,9 @@
                     }
                 };
                 expect( view._isDirty( "myproperty", "hello", el ) ).to.be.false;
-                expect( view._dirty.myproperty ).to.not.exist;
             });
 
-            it('should return true if value is the different to the dirty value and element is the same as the dirty element', function() {
+            it('should return true if value is different to the dirty value and element is the same as the dirty element', function() {
                 var el;
                 view = new BindingView();
                 view.$el.html( "<input id='input-one' type='text'>" );
@@ -388,10 +440,9 @@
                     }
                 };
                 expect( view._isDirty( "myproperty", "world", el ) ).to.be.true;
-                expect( view._dirty.myproperty ).to.not.exist;
             });
 
-            it('should return true if value is the different to the dirty value and element is different to the dirty element', function() {
+            it('should return true if value is different to the dirty value and element is different to the dirty element', function() {
                 var el;
                 view = new BindingView();
                 view.$el.html( "<input id='input-one' type='text'><div id='el-one'></div>" );
@@ -403,7 +454,200 @@
                     }
                 };
                 expect( view._isDirty( "myproperty", "world", view.$( "#el-one" ) ) ).to.be.true;
-                expect( view._dirty.myproperty ).to.exist;
+            });
+        });
+
+        describe('setViewData()', function () {
+            beforeEach(function() {
+                this.fixture.html( "<div id='binding-el'></div>" );
+                // Create Binding View definition
+                BindingView = Backbone.View.extend();
+                ModelBindingMixin.call( BindingView.prototype );
+            });
+
+            afterEach(function() {
+                if ( stub ) {
+                    stub.restore();
+                }
+                view.remove();
+            });
+
+            it('should set value on correct form field element', function() {
+                var el;
+
+                // Create view
+                view = new BindingView({
+                    el: "#binding-el",
+                    model: new Backbone.Model()
+                });
+                view.$el.html( "<input id='input-one' type='text' data-bind='mypropertyone'>" );
+                el = view.$( "[data-bind=mypropertyone]" );
+                expect( view.$( "#input-one" ).val() ).to.equal( "" );
+                view.setViewData( el, "hello", "mypropertyone" );
+                expect( view.$( "#input-one" ).val() ).to.equal( "hello" );
+                view.setViewData( el, "world", "mypropertyone" );
+                expect( view.$( "#input-one" ).val() ).to.equal( "world" );
+
+                view.$el.html( "<input id='input-two' type='text' name='mypropertytwo'>" );
+                el = view.$( "[name=mypropertytwo]" );
+                expect( view.$( "#input-two" ).val() ).to.equal( "" );
+                view.setViewData( el, "hiya", "mypropertytwo" );
+                expect( view.$( "#input-two" ).val() ).to.equal( "hiya" );
+                view.setViewData( el, "testing", "mypropertytwo" );
+                expect( view.$( "#input-two" ).val() ).to.equal( "testing" );
+
+                view.$el.html( "<textarea id='input-three' name='mypropertythree'></textarea>" );
+                el = view.$( "[name=mypropertythree]" );
+                expect( view.$( "#input-three" ).val() ).to.equal( "" );
+                view.setViewData( el, "echo", "mypropertythree" );
+                expect( view.$( "#input-three" ).val() ).to.equal( "echo" );
+                view.setViewData( el, "sudo", "mypropertythree" );
+                expect( view.$( "#input-three" ).val() ).to.equal( "sudo" );
+
+                view.$el.html( "<select id='input-four' name='mypropertyfour'><option value=''></option><option value='1'>One</option><option value='2'>Two</option></select>" );
+                el = view.$( "[name=mypropertyfour]" );
+                expect( view.$( "#input-four" ).val() ).to.equal( "" );
+                view.setViewData( el, "1", "mypropertyfour" );
+                expect( view.$( "#input-four" ).val() ).to.equal( "1" );
+                view.setViewData( el, "2", "mypropertyfour" );
+                expect( view.$( "#input-four" ).val() ).to.equal( "2" );
+            });
+
+            it('should check/uncheck model value on checkbox field', function() {
+                var el;
+
+                // Create view
+                view = new BindingView({
+                    el: "#binding-el",
+                    model: new Backbone.Model()
+                });
+                view.$el.html( "<input id='input-one' type='checkbox' data-bind='mypropertyone'>" );
+                el = view.$( "[data-bind=mypropertyone]" );
+                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.false;
+                view.setViewData( el, true, "mypropertyone" );
+                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.true;
+                view.setViewData( el, false, "mypropertyone" );
+                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.false;
+                view.setViewData( el, "hello", "mypropertyone" );
+                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.true;
+                view.setViewData( el, "", "mypropertyone" );
+                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.false;
+                view.setViewData( el, 1, "mypropertyone" );
+                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.true;
+                view.setViewData( el, 0, "mypropertyone" );
+                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.false;
+                view.setViewData( el, null, "mypropertyone" );
+                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.false;
+                view.setViewData( el, undefined, "mypropertyone" );
+                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.false;
+
+                view.$el.html( "<input id='input-two' type='checkbox' name='mypropertytwo'>" );
+                el = view.$( "[name=mypropertytwo]" );
+                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
+                view.setViewData( el, true, "mypropertytwo" );
+                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.true;
+                view.setViewData( el, false, "mypropertytwo" );
+                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
+                view.setViewData( el, "hello", "mypropertytwo" );
+                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.true;
+                view.setViewData( el, "", "mypropertytwo" );
+                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
+                view.setViewData( el, 1, "mypropertytwo" );
+                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.true;
+                view.setViewData( el, 0, "mypropertytwo" );
+                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
+                view.setViewData( el, null, "mypropertytwo" );
+                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
+                view.setViewData( el, undefined, "mypropertytwo" );
+                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
+            });
+
+            it('should check/uncheck model value on radio field with a radio group', function() {
+                var radio1, radio2, radio3;
+
+                // Create view
+                view = new BindingView({
+                    el: "#binding-el",
+                    model: new Backbone.Model()
+                });
+                view.$el.html( "<input id='input-one' type='radio' data-bind='mypropertyone' name='groupone' value='one'><input id='input-two' type='radio' data-bind='mypropertyone' name='groupone' value='two'><input id='input-three' type='radio' data-bind='mypropertyone' name='groupone' value='three'>" );
+                radio1 = view.$( "#input-one" );
+                radio2 = view.$( "#input-two" );
+                radio3 = view.$( "#input-three" );
+                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.false;
+                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
+                expect( view.$( "#input-three" ).is( ":checked" ) ).to.be.false;
+                view.setViewData( radio1, "one", "mypropertyone" );
+                view.setViewData( radio2, "one", "mypropertyone" );
+                view.setViewData( radio3, "one", "mypropertyone" );
+                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.true;
+                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
+                expect( view.$( "#input-three" ).is( ":checked" ) ).to.be.false;
+                view.setViewData( radio1, "three", "mypropertyone" );
+                view.setViewData( radio2, "three", "mypropertyone" );
+                view.setViewData( radio3, "three", "mypropertyone" );
+                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.false;
+                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
+                expect( view.$( "#input-three" ).is( ":checked" ) ).to.be.true;
+                view.setViewData( radio1, "unknown", "mypropertyone" );
+                view.setViewData( radio2, "unknown", "mypropertyone" );
+                view.setViewData( radio3, "unknown", "mypropertyone" );
+                expect( view.$( "#input-one" ).is( ":checked" ) ).to.be.false;
+                expect( view.$( "#input-two" ).is( ":checked" ) ).to.be.false;
+                expect( view.$( "#input-three" ).is( ":checked" ) ).to.be.false;
+            });
+
+            it('should display the model value as text on the element if not a form element', function() {
+                var el;
+
+                // Create view
+                view = new BindingView({
+                    el: "#binding-el",
+                    model: new Backbone.Model()
+                });
+                view.$el.html( "<div id='el-one' data-bind='mypropertyone'></div>" );
+                el = view.$( "[data-bind=mypropertyone]" );
+                expect( view.$( "#el-one" ).text() ).to.equal( "" );
+                view.setViewData( el, "hello", "mypropertyone" );
+                expect( view.$( "#el-one" ).text() ).to.equal( "hello" );
+                view.setViewData( el, "hello world", "mypropertyone" );
+                expect( view.$( "#el-one" ).text() ).to.equal( "hello world" );
+            });
+
+            it('should display the model value as html on the element if not a form element and options has property of html set to true', function() {
+                var el;
+
+                // Create view
+                view = new BindingView({
+                    el: "#binding-el",
+                    model: new Backbone.Model()
+                });
+                stub = sinon.stub( view, "_getBindingOptions" ).returns( { html : true } );
+                view.$el.html( "<div id='el-one' data-bind='mypropertyone'></div>" );
+                el = view.$( "[data-bind=mypropertyone]" );
+                expect( view.$( "#el-one" ).html() ).to.equal( "" );
+                view.setViewData( el, "<strong>hello</strong>", "mypropertyone" );
+                expect( view.$( "#el-one" ).html() ).to.equal( "<strong>hello</strong>" );
+                view.setViewData( el, "<em>hello world</em>", "mypropertyone" );
+                expect( view.$( "#el-one" ).html() ).to.equal( "<em>hello world</em>" );
+            });
+
+            it('should convert the model value if binding options has a convert function', function() {
+                var el;
+
+                // Create view
+                view = new BindingView({
+                    el: "#binding-el",
+                    model: new Backbone.Model()
+                });
+                stub = sinon.stub( view, "_getBindingOptions" ).returns( { convert : function( value ) {
+                    return "Converted: " + value;
+                } } );
+                view.$el.html( "<div id='el-one' data-bind='mypropertyone'></div>" );
+                el = view.$( "[data-bind=mypropertyone]" );
+                expect( view.$( "#el-one" ).html() ).to.equal( "" );
+                view.setViewData( el, "hello world", "mypropertyone" );
+                expect( view.$( "#el-one" ).html() ).to.equal( "Converted: hello world" );
             });
         });
 
@@ -486,20 +730,6 @@
                 expect( view.model.get( "mypropertyone" ) ).to.be.false;
             });
 
-            it('should add field to dirty list', function() {
-                // Create view
-                view = new BindingView({
-                    el: "#binding-el",
-                    model: new Backbone.Model()
-                });
-                view.$el.html( "<input id='input-one' type='text' name='myprop'>" );
-                view.$( "#input-one" ).val( "hello" );
-                view.$( "#input-one" ).trigger( "change" );
-                expect( view._dirty.myprop ).to.exist;
-                expect( view._dirty.myprop.el[ 0 ] ).to.equal( view.$( "#input-one" )[ 0 ] );
-                expect( view._dirty.myprop.value ).to.equal( "hello" );
-            });
-
             it('should not try to set model if no data-bind or name attributes on element', function() {
                 // Create view
                 view = new BindingView({
@@ -525,6 +755,31 @@
                 view.$( "#input-one" ).val( "hello" );
                 view.$( "#input-one" ).trigger( "change" );
                 expect( view.model.get( "mypropertyone" ) ).to.be.undefined;
+            });
+
+            // This is for edge cases where inbetween view setting and being applied on model the value gets changed i.e. a schema
+            // For example model value is 1, view tries to set model with -2 but model has a min value of 1 so changes set value to 1
+            // This wouldnt cause a change event to fire as the model doesnt see a  change i.e. 1 set to 1 meaning view is now out of date
+            it('should update view if model value is different to value set', function() {
+                var model = new Backbone.Model();
+                model.set( "mypropertyone", 1 );
+                // Create view
+                view = new BindingView({
+                    el: "#binding-el",
+                    model: model
+                });
+                view.$el.html( "<input id='input-one' type='text' name='mypropertyone'>" );
+                expect( view.model.get( "mypropertyone" ) ).to.equal( 1 );
+                // Stub get so it looks like model has changed value from one set in view
+                var getStub = sinon.stub( model, "get" ).returns( 1 );
+                stub = sinon.stub( view, "setViewData" );
+                view.$( "#input-one" ).val( 0.5 );
+                view.$( "#input-one" ).trigger( "change" );
+                expect( stub.called ).to.be.true;
+                // Called twice - one from change event and one from resetting value
+                expect( stub.callCount ).to.equal( 2 );
+                expect( stub.calledWith( view.$( document.getElementById( "input-one" ) ), 1, 'mypropertyone' ) ).to.be.true;
+                getStub.restore();
             });
         });
 
