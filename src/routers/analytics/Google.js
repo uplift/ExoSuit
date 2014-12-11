@@ -13,11 +13,9 @@
                 return ( root.ExoSuit.Mixins.GoogleAnalyticsRouteMixin = factory( root, {}, Backbone ) );
             }
         );
-    // Next for Node.js or CommonJS.
-    } else if ( typeof exports !== 'undefined' ) {
-        /* This is a Client side mixin only */
+    // This is a Client side mixin only so no Node.js or CommonJS.
     // Finally, as a browser global.
-    } else {
+    } else if ( typeof exports === 'undefined' ) {
         root.ExoSuit = root.ExoSuit || {};
         root.ExoSuit.Mixins = root.ExoSuit.Mixins || {};
         root.ExoSuit.Mixins.GoogleAnalyticsRouteMixin = factory( root, {}, root.Backbone );
