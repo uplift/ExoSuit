@@ -26,7 +26,7 @@
 
         this.tagName = "select";
         this.labelKey = this.labelKey || "label";
-        this.valueKey = this.valueKey || "value"
+        this.valueKey = this.valueKey || "value";
         this.addInitialOption = this.addInitialOption || false;
         this.initialOptionLabel = typeof this.initialOptionLabel !== "undefined" ? this.initialOptionLabel : "Please Select";
         this.initialOptionValue = typeof this.initialOptionValue !== "undefined" ? this.initialOptionValue : "0";
@@ -56,13 +56,13 @@
             if ( oldInitialize ) {
                 oldInitialize.apply( this, arguments );
             }
-        }
+        };
 
         this.render = function() {
             var options = "";
 
             if ( this.addInitialOption ) {
-                options += "<option value='" + this.initialOptionValue + "'>" + this.initialOptionLabel + "</option>"
+                options += "<option value='" + this.initialOptionValue + "'>" + this.initialOptionLabel + "</option>";
             }
 
             if ( this.collection ) {
@@ -70,7 +70,7 @@
                     var selected = this.selectedIndex && this.selectedIndex === index ? " selected" : "";
 
                     options += "<option value='" + model.get( this.valueKey ) + "'" + selected + ">" + model.get( this.labelKey ) + "</option>";
-                }, this);
+                }, this );
             }
 
             return this.$el.html( options );
