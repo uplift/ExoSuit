@@ -17,6 +17,7 @@ if ( window.__karma__ ) {
         'tests/specs/collections/capped/CappedCollectionSpec',
         'tests/specs/collections/pagination/ClientPaginationSpec',
         'tests/specs/collections/sort-on-change/SortOnChangeSpec',
+        'tests/specs/collections/subset/CappedSubsetSpec',
         'tests/specs/models/exclude-from-json/ExcludeFromJsonSpec',
         'tests/specs/routers/analytics/GoogleSpec',
         'tests/specs/routers/parse/ParseQueryStringSpec',
