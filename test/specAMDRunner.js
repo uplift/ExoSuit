@@ -18,6 +18,8 @@ if ( window.__karma__ ) {
         'tests/specs/collections/pagination/ClientPaginationSpec',
         'tests/specs/collections/sort-on-change/SortOnChangeSpec',
         'tests/specs/collections/subset/CappedSubsetSpec',
+        'tests/specs/collections/subset/FilteredSubsetSpec',
+        'tests/specs/collections/subset/PaginationSubsetSpec',
         'tests/specs/models/exclude-from-json/ExcludeFromJsonSpec',
         'tests/specs/routers/analytics/GoogleSpec',
         'tests/specs/routers/parse/ParseQueryStringSpec',
