@@ -4,6 +4,8 @@ var ExoSuit = {
         "ClientPaginationMixin": require( './src/collections/pagination/ClientPagination' ),
         "SortOnChangeMixin": require( './src/collections/sort-on-change/SortOnChange' ),
         "CappedSubsetMixin": require( './src/collections/subset/CappedSubset' ),
+        "FilteredSubsetMixin": require( './src/collections/subset/FilteredSubset' ),
+        "PaginationSubsetMixin": require( './src/collections/subset/PaginationSubset' ),
         "ExcludeFromJSONMixin": require( './src/models/exclude-from-json/ExcludeFromJson' ),
         "GoogleAnalyticsRouteMixin": require( './src/routers/analytics/Google' ),
         "ParseQueryStringMixin": require( './src/routers/parse/ParseQueryString' ),
