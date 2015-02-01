@@ -112,13 +112,14 @@
             }
 
             if ( this.parent.length < this.limit ) {
-                this.add( model );
+                this.add( model, options );
             } else if ( this.order.toLowerCase() === 'last' && this.parent.indexOf( model ) >= ( this.parent.length - this.limit ) ) {
-                this.remove( this.parent.at( this.parent.length - this.limit - 1 ) );
-                this.add( model, { at : index ? index - this.limit : undefined } );
+                this.remove( this.parent.at( this.parent.length - this.limit - 1 ), options );
+                options.at = index ? index - this.limit : undefined;
+                this.add( model, options );
             } else if ( this.order.toLowerCase() === 'first' && this.parent.indexOf( model ) < this.limit ) {
-                this.remove( this.parent.at( this.limit ) );
-                this.add( model, { at : index } );
+                this.remove( this.parent.at( this.limit ), options );
+                this.add( model, options );
             }
         };
 
@@ -128,7 +129,7 @@
             var parentModels;
 
             if ( this.contains( model ) ) {
-                this.remove( model );
+                this.remove( model, options );
                 if ( this.parent.length > this.length ) {
                     parentModels = this._getParentModels();
                     if ( this.order.toLowerCase() === 'last' ) {
@@ -143,8 +144,8 @@
             }
         };
 
-        this.__reset = function() {
-            this.reset( this._getParentModels() );
+        this.__reset = function( collection, options ) {
+            this.reset( this._getParentModels(), options );
         };
 
         this.resize = function( size, options ) {
