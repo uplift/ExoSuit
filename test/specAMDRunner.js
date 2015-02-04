@@ -25,6 +25,8 @@ if ( window.__karma__ ) {
         'tests/specs/routers/parse/ParseQueryStringSpec',
         'tests/specs/routers/route-title/RouteTitleSpec',
         'tests/specs/views/data-binding/ModelBindingSpec',
+        'tests/specs/views/events/ModelEventsSpec',
+        'tests/specs/views/events/CollectionEventsSpec',
         'tests/specs/views/select-list/SelectSpec',
         'tests/specs/views/selectors/SelectorsSpec'
     ];
