@@ -11,6 +11,8 @@ var ExoSuit = {
         "ParseQueryStringMixin": require( './src/routers/parse/ParseQueryString' ),
         "RouteTitleMixin": require( './src/routers/route-title/RouteTitle' ),
         "ModelBindingMixin": require( './src/views/data-binding/ModelBinding' ),
+        "ModelEventsMixin": require( './src/views/events/ModelEvents' ),
+        "CollectionEventsMixin": require( './src/views/events/CollectionEvents' ),
         "SelectListMixin": require( './src/views/select-list/Select' ),
         "SelectorMixin": require( './src/views/selectors/Selectors' )
     }
