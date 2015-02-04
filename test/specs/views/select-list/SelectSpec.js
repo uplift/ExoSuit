@@ -5,20 +5,28 @@
         define(
             [
                 'backbone',
+                'sinon',
                 'views/select-list/Select'
             ],
-            function( Backbone, SelectListMixin ) {
-                factory( Backbone, root.expect, SelectListMixin );
+            function( Backbone, sinon, SelectListMixin ) {
+                factory( Backbone, root.expect, sinon, SelectListMixin );
             }
         );
     // Next for Node.js or CommonJS.
     } else if ( typeof exports !== 'undefined' ) {
-        // Uses jquery which needs window object so don't run these tests in node
+        var fs = require( 'fs' );
+        var expect = require( 'chai' ).expect;
+        var Backbone = require( 'backbone' );
+        var $ = require( 'jquery' )( require( 'jsdom' ).jsdom( fs.readFileSync( './test/specs/fixtures/main.html' ) ).parentWindow );
+        Backbone.$ = $;
+        var sinon = require( 'sinon' );
+        var SelectListMixin = require( '../../../../src/views/select-list/Select' );
+        factory( Backbone, expect, sinon, SelectListMixin );
     // Finally, as a browser global.
     } else {
-        factory( root.Backbone, root.expect, root.ExoSuit.Mixins.SelectListMixin );
+        factory( root.Backbone, root.expect, root.sinon, root.ExoSuit.Mixins.SelectListMixin );
     }
-}( this, function( Backbone, expect, SelectListMixin ) {
+}( this, function( Backbone, expect, sinon, SelectListMixin ) {
     describe('Select List Mixin View', function () {
         var view, SelectView, oldMethodStub;
 

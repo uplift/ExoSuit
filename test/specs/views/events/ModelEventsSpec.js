@@ -5,20 +5,28 @@
         define(
             [
                 'backbone',
+                'sinon',
                 'views/events/ModelEvents'
             ],
-            function( Backbone, ModelEventsMixin ) {
-                factory( Backbone, root.expect, ModelEventsMixin );
+            function( Backbone, sinon, ModelEventsMixin ) {
+                factory( Backbone, root.expect, sinon, ModelEventsMixin );
             }
         );
     // Next for Node.js or CommonJS.
     } else if ( typeof exports !== 'undefined' ) {
-        // Uses jquery which needs window object so don't run these tests in node
+        var fs = require( 'fs' );
+        var expect = require( 'chai' ).expect;
+        var Backbone = require( 'backbone' );
+        var $ = require( 'jquery' )( require( 'jsdom' ).jsdom( fs.readFileSync( './test/specs/fixtures/main.html' ) ).parentWindow );
+        Backbone.$ = $;
+        var sinon = require( 'sinon' );
+        var ModelEventsMixin = require( '../../../../src/views/events/ModelEvents' );
+        factory( Backbone, expect, sinon, ModelEventsMixin );
     // Finally, as a browser global.
     } else {
-        factory( root.Backbone, root.expect, root.ExoSuit.Mixins.ModelEventsMixin );
+        factory( root.Backbone, root.expect, root.sinon, root.ExoSuit.Mixins.ModelEventsMixin );
     }
-}( this, function( Backbone, expect, ModelEventsMixin ) {
+}( this, function( Backbone, expect, sinon, ModelEventsMixin ) {
     describe('Model Events View Mixin', function () {
         var view, ModelEventsView, stub, oldMethodStub;
 

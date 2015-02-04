@@ -6,20 +6,28 @@
             [
                 'backbone',
                 'jquery',
+                'sinon',
                 'views/selectors/Selectors'
             ],
-            function( Backbone, $, SelectorMixin ) {
-                factory( Backbone, $, root.expect, SelectorMixin );
+            function( Backbone, $, sinon, SelectorMixin ) {
+                factory( Backbone, $, root.expect, sinon, SelectorMixin );
             }
         );
     // Next for Node.js or CommonJS.
     } else if ( typeof exports !== 'undefined' ) {
-        // Uses jquery which needs window object so don't run these tests in node
+        var fs = require( 'fs' );
+        var expect = require( 'chai' ).expect;
+        var Backbone = require( 'backbone' );
+        var $ = require( 'jquery' )( require( 'jsdom' ).jsdom( fs.readFileSync( './test/specs/fixtures/main.html' ) ).parentWindow );
+        Backbone.$ = $;
+        var sinon = require( 'sinon' );
+        var SelectorMixin = require( '../../../../src/views/selectors/Selectors' );
+        factory( Backbone, $, expect, sinon, SelectorMixin );
     // Finally, as a browser global.
     } else {
-        factory( root.Backbone, root.jQuery, root.expect, root.ExoSuit.Mixins.SelectorMixin );
+        factory( root.Backbone, root.jQuery, root.expect, root.sinon, root.ExoSuit.Mixins.SelectorMixin );
     }
-}( this, function( Backbone, $, expect, SelectorMixin ) {
+}( this, function( Backbone, $, expect, sinon, SelectorMixin ) {
     describe('Selector Mixin View', function () {
         var view, SelectorView, stub, stub2, oldMethodStub;
 
