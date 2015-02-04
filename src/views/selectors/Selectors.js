@@ -17,7 +17,7 @@
     } else if ( typeof exports !== 'undefined' ) {
         var _ = require( 'underscore' );
 
-        factory( root, exports, _ );
+        module.exports = factory( root, exports, _ );
     // Finally, as a browser global.
     } else {
         root.ExoSuit = root.ExoSuit || {};
