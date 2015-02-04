@@ -5,10 +5,11 @@
         define(
             [
                 'backbone',
+                'sinon',
                 'routers/route-title/RouteTitle'
             ],
-            function( Backbone, RouteTitleMixin ) {
-                factory( Backbone, root.expect, root.sinon, RouteTitleMixin );
+            function( Backbone, sinon, RouteTitleMixin ) {
+                factory( Backbone, root.expect, sinon, RouteTitleMixin );
             }
         );
     // Next for Node.js or CommonJS.

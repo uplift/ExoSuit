@@ -5,10 +5,11 @@
         define(
             [
                 'backbone',
+                'sinon',
                 'routers/analytics/Google'
             ],
-            function( Backbone, GoogleAnalyticsRouteMixin ) {
-                factory( Backbone, root.expect, root.sinon, GoogleAnalyticsRouteMixin );
+            function( Backbone, sinon, GoogleAnalyticsRouteMixin ) {
+                factory( Backbone, root.expect, sinon, GoogleAnalyticsRouteMixin );
             }
         );
     // Next for Node.js or CommonJS.
@@ -49,7 +50,7 @@
 
             it('should call legacy google analytics code when _gaq is defined', function() {
                 window._gaq = [];
-                gaStub = sinon.stub( _gaq, "push" );
+                gaStub = sinon.stub( window._gaq, "push" );
                 urlStub = sinon.stub( Backbone.history, "getFragment" ).returns( "pageone" );
                 // Create view
                 var router = new Router();
@@ -61,7 +62,7 @@
 
             it('should prepend a / before the url if one doesnt exist', function() {
                 window._gaq = [];
-                gaStub = sinon.stub( _gaq, "push" );
+                gaStub = sinon.stub( window._gaq, "push" );
                 urlStub = sinon.stub( Backbone.history, "getFragment" ).returns( "pageone" );
                 // Create view
                 var router = new Router();
