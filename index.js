@@ -7,6 +7,7 @@ var ExoSuit = {
         "FilteredSubsetMixin": require( './src/collections/subset/FilteredSubset' ),
         "PaginationSubsetMixin": require( './src/collections/subset/PaginationSubset' ),
         "ExcludeFromJSONMixin": require( './src/models/exclude-from-json/ExcludeFromJson' ),
+        "FlattenMixin": require( './src/models/flatten/Flatten' ),
         "GoogleAnalyticsRouteMixin": require( './src/routers/analytics/Google' ),
         "ParseQueryStringMixin": require( './src/routers/parse/ParseQueryString' ),
         "RouteTitleMixin": require( './src/routers/route-title/RouteTitle' ),
