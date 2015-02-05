@@ -21,6 +21,7 @@ if ( window.__karma__ ) {
         'tests/specs/collections/subset/FilteredSubsetSpec',
         'tests/specs/collections/subset/PaginationSubsetSpec',
         'tests/specs/models/exclude-from-json/ExcludeFromJsonSpec',
+        'tests/specs/models/flatten/FlattenSpec',
         'tests/specs/routers/analytics/GoogleSpec',
         'tests/specs/routers/parse/ParseQueryStringSpec',
         'tests/specs/routers/route-title/RouteTitleSpec',
@@ -37,6 +38,7 @@ if ( window.__karma__ ) {
 requirejs.config({
     baseUrl: baseUrl,
     paths: {
+        "exosuit"           : "./",
         "jquery"            : "../test/bower_components/jquery/dist/jquery",
         "underscore"        : "../test/bower_components/underscore/underscore",
         "backbone"          : "../test/bower_components/backbone/backbone",
