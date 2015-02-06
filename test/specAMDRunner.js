@@ -22,6 +22,7 @@ if ( window.__karma__ ) {
         'tests/specs/collections/subset/PaginationSubsetSpec',
         'tests/specs/models/exclude-from-json/ExcludeFromJsonSpec',
         'tests/specs/models/flatten/FlattenSpec',
+        'tests/specs/models/transforms/TransformsSpec',
         'tests/specs/routers/analytics/GoogleSpec',
         'tests/specs/routers/parse/ParseQueryStringSpec',
         'tests/specs/routers/route-title/RouteTitleSpec',
