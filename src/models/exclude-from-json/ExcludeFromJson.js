@@ -32,7 +32,10 @@
         // Cache current mixin methods to use later
         var oldToJSON = this.toJSON;
 
-        FlattenMixin.call( this );
+        // Mixin flatten functionality if it doesnt exist already
+        if ( !this.flatten && !this.unflatten ) {
+            FlattenMixin.call( this );
+        }
 
         // Wrap existing toJSON method
         this.toJSON = function() {
