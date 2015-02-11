@@ -46,19 +46,18 @@
             if ( this.excludeFromJSON ) {
                 // Flatten json object into single depth
                 json = this.flatten( json );
-                // Loop over excludeFromJSON array
-                for ( var i = 0, len = this.excludeFromJSON.length; i < len; i++ ) {
-                    // Delete property in excludeFromJSON from json response
-                    delete json[ this.excludeFromJSON[ i ] ];
-                    // Loop over json keys
-                    for ( var key in json ) {
+                // Remove keys from excludeFromJSON array
+                json = _.omit( json, function( value, key, object ) {
+                    // Loop over excludeFromJSON array
+                    for ( var i = 0, len = this.excludeFromJSON.length; i < len; i++ ) {
                         // Check if key includes part of exclude key i.e. parent object/array to be removed
                         if ( key.indexOf( this.excludeFromJSON[ i ] ) !== -1 ) {
                             // Delete key
-                            delete json[ key ];
+                            return true;
                         }
                     }
-                }
+                    return false;
+                }, this );
                 // Return flattened json into original structure minus deleted properties
                 json = this.unflatten( json );
             }
