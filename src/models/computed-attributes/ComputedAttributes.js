@@ -42,12 +42,15 @@
         this.setupComputedEvents = function() {
             var computedAttr;
 
+            function onChange( model, value, options ) {
+                /*jshint validthis:true */
+                this.updateDeps( key, value, options );
+            }
+
             for ( var key in this.computed ) {
                 computedAttr = this.computed[ key ];
 
-                this.on( 'change:' + key, function( model, value, options ) {
-                    this.updateDeps( key, value, options );
-                } );
+                this.on( 'change:' + key, onChange );
 
                 this.setupDepEvents( computedAttr.deps );
 
