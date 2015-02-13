@@ -20,6 +20,7 @@ if ( window.__karma__ ) {
         'tests/specs/collections/subset/CappedSubsetSpec',
         'tests/specs/collections/subset/FilteredSubsetSpec',
         'tests/specs/collections/subset/PaginationSubsetSpec',
+        'tests/specs/models/computed-attributes/ComputedAttributesSpec',
         'tests/specs/models/exclude-from-json/ExcludeFromJsonSpec',
         'tests/specs/models/flatten/FlattenSpec',
         'tests/specs/models/transforms/TransformsSpec',
