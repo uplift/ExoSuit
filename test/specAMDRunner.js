@@ -32,7 +32,8 @@ if ( window.__karma__ ) {
         'tests/specs/views/events/CollectionEventsSpec',
         'tests/specs/views/layout-manager/ViewSwitcherSpec',
         'tests/specs/views/select-list/SelectSpec',
-        'tests/specs/views/selectors/SelectorsSpec'
+        'tests/specs/views/selectors/SelectorsSpec',
+        'tests/specs/ExoSuitSpec'
     ];
     callback = mocha.run;
 }
