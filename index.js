@@ -6,6 +6,7 @@ var ExoSuit = {
         "CappedSubsetMixin": require( './src/collections/subset/CappedSubset' ),
         "FilteredSubsetMixin": require( './src/collections/subset/FilteredSubset' ),
         "PaginationSubsetMixin": require( './src/collections/subset/PaginationSubset' ),
+        "ComputedAttributesMixin": require( './src/models/computed-attributes/ComputedAttributes' ),
         "ExcludeFromJSONMixin": require( './src/models/exclude-from-json/ExcludeFromJson' ),
         "FlattenMixin": require( './src/models/flatten/Flatten' ),
         "TransformMixin": require( './src/models/transforms/Transforms' ),
