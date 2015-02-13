@@ -97,7 +97,7 @@
                 value = computedAttr.get.apply( this, [ fields ] );
                 this.set( key, value, { silentUpdateDeps: true } );
             }
-        }
+        };
 
         this.toJSON = function() {
             var json = oldToJSON.apply( this, arguments );
