@@ -60,6 +60,7 @@
 
         // Set defaults if properties arent set
         this.titlePrefix = this.titlePrefix || "";
+        this.titleSuffix = this.titleSuffix || "";
         this.defaultTitle = this.defaultTitle || "";
 
         // Override execute method
@@ -90,7 +91,7 @@
 
         // Set document title
         this.setTitle = oldSetTitle || function( title ) {
-            document.title = this.titlePrefix + title;
+            document.title = this.titlePrefix + title + this.titleSuffix;
         };
     };
 

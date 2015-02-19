@@ -99,16 +99,24 @@
                 document.title = oldTitle;
             });
 
-            it('should set the document title to the prefix plus the passed in string', function() {
+            it('should set the document title to the prefix plus the passed in string plus the suffix', function() {
                 // Create Router definition
                 Router = Backbone.Router.extend({
-                    titlePrefix: "Prefix - "
+                    titlePrefix: "Prefix - ",
+                    titleSuffix: " - Suffix"
                 });
                 RouteTitleMixin.call( Router.prototype );
                 // Create view
                 var router = new Router();
                 router.setTitle( "My Title" );
-                expect( document.title ).to.equal( "Prefix - My Title" );
+                expect( document.title ).to.equal( "Prefix - My Title - Suffix" );
+                router.titlePrefix = "";
+                router.setTitle( "My New Title" );
+                expect( document.title ).to.equal( "My New Title - Suffix" );
+                router.titlePrefix = "Prefix - ";
+                router.suffixPrefix = "";
+                router.setTitle( "My Old Title" );
+                expect( document.title ).to.equal( "Prefix - My Old Title" );
             });
 
             it('should not override the setTitle function if one is already on the prototype', function() {

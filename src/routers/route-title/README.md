@@ -12,6 +12,8 @@ For this mixin the config object of each callback name needs a title property an
 
 A titlePrefix property can also be added to the router definition to prefix every page title with a common brand etc. The titlePrefix can only be a string.
 
+A titleSuffix property can be added for appending to very page title similar to titlePrefix. The titleSuffix can only be a string.
+
 A defaultTitle property can be set to cater for pages that don't have a defined page title. The defaultTitle can be a string or a function.
 
 **Example:**
@@ -26,6 +28,7 @@ A defaultTitle property can be set to cater for pages that don't have a defined 
         },
 
         titlePrefix: "My Brand - ",
+        titleSuffix: " - The Best Brand in the World!",
         defaultPrefix: "Welcome!",
 
         routeConfig: {
