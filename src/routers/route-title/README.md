@@ -25,6 +25,9 @@ A defaultTitle property can be set to cater for pages that don't have a defined 
             "login": "login"
         },
 
+        titlePrefix: "My Brand - ",
+        defaultPrefix: "Welcome!",
+
         routeConfig: {
             index: {
                 title: "Homepage"
