@@ -13,6 +13,7 @@ var ExoSuit = {
         "GoogleAnalyticsRouteMixin": require( './src/routers/analytics/Google' ),
         "ParseQueryStringMixin": require( './src/routers/parse/ParseQueryString' ),
         "RouteTitleMixin": require( './src/routers/route-title/RouteTitle' ),
+        "CollectionBindingMixin": require( './src/views/data-binding/CollectionBinding' ),
         "ModelBindingMixin": require( './src/views/data-binding/ModelBinding' ),
         "ModelEventsMixin": require( './src/views/events/ModelEvents' ),
         "CollectionEventsMixin": require( './src/views/events/CollectionEvents' ),
