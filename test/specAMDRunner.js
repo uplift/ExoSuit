@@ -27,6 +27,7 @@ if ( window.__karma__ ) {
         'tests/specs/routers/analytics/GoogleSpec',
         'tests/specs/routers/parse/ParseQueryStringSpec',
         'tests/specs/routers/route-title/RouteTitleSpec',
+        'tests/specs/views/data-binding/CollectionBindingSpec',
         'tests/specs/views/data-binding/ModelBindingSpec',
         'tests/specs/views/events/ModelEventsSpec',
         'tests/specs/views/events/CollectionEventsSpec',
