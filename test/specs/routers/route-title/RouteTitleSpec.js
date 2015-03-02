@@ -114,7 +114,7 @@
                 router.setTitle( "My New Title" );
                 expect( document.title ).to.equal( "My New Title - Suffix" );
                 router.titlePrefix = "Prefix - ";
-                router.suffixPrefix = "";
+                router.titleSuffix = "";
                 router.setTitle( "My Old Title" );
                 expect( document.title ).to.equal( "Prefix - My Old Title" );
             });
