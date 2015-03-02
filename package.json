@@ -13,7 +13,10 @@
     "url": "https://github.com/uplift/ExoSuit/issues"
   },
   "scripts": {
-    "test": "gulp test-node"
+    "test": "gulp test-node",
+    "dist-mixins": "browserify --exclude underscore --exclude backbone --standalone exosuit index.js > dist/exosuit-mixins.js",
+    "dist-main": "browserify --exclude underscore --exclude backbone --standalone exosuit src/ExoSuit.js > dist/exosuit.js",
+    "dist": "npm run dist-main & npm run dist-mixins"
   },
   "main": "index.js",
   "keywords": [
