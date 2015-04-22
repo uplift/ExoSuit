@@ -69,7 +69,7 @@ Define mixins for a module as an array on the module definition when extending a
 
 Example:
 
-    var my Model = Backbone.Model.extend({
+    var myModel = ExoSuit.Model.extend({
         mixins: [ ExoSuit.Mixins.ExcludeFromJSONMixin ]
     });
 
