@@ -15,7 +15,6 @@ if ( window.__karma__ ) {
     baseUrl = '../src';
     deps = [
         'tests/specs/collections/capped/CappedCollectionSpec',
-        'tests/specs/collections/pagination/ClientPaginationSpec',
         'tests/specs/collections/sort-on-change/SortOnChangeSpec',
         'tests/specs/collections/subset/CappedSubsetSpec',
         'tests/specs/collections/subset/FilteredSubsetSpec',
