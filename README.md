@@ -8,7 +8,7 @@ Coming Soon!
 
 A collection of mixins to be used to augment backbone.js applications.
 
-Mixin the bits of functionality you need and create your own base modules to extend from for your applications need.
+Compose the bits of functionality you need and create your own base modules to extend from for your applications need.
 
 ## Install
 
@@ -50,7 +50,7 @@ In an AMD environment, load the mixin as you would any other AMD module. You'll 
         paths: {
             "underscore": "path/to/underscore"
             "backbone": "path/to/backbone"
-            "underscore": "path/to/exosuit"
+            "exosuit": "path/to/exosuit"
         }
     });
 
