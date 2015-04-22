@@ -85,10 +85,6 @@ Detailed description on each mixin can be found in their corresponding directory
 
 Cap the number of model that are in the collection at any one time.
 
-#### Client Pagination Collection
-
-Get paging data from the collection that has full collection data (i.e. doesnt fetch data for each page). 
-
 #### Sort on Model Change Collection
 
 When a model within the collection changes, resort the collection.
