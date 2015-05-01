@@ -10,6 +10,8 @@ All subset collections require a parent collection being passed in the options a
 
 **Browser Mixin Name: ExoSuit.Mixins.CappedSubsetMixin**
 
+**Dependencies:** Underscore.
+
 Extend a collection with a limit and order attributes. The limit attribute is the capped limit of models the subset will include at anytime. The order is either 'first' or 'last' and is which end of the parent collection the subset data is retrieved from.
 
 The subset has two utility methods on its prototype. They are resize and reorder. 
@@ -78,6 +80,8 @@ Default filter function returns true for all parent models so should be overridd
 # Pagination Subset Mixin
 
 **Browser Mixin Name: ExoSuit.Mixins.PaginationSubsetMixin**
+
+**Dependencies:** Underscore, Backbone.
 
 Extend a collection with paging state. The paging state determines which models should be taken from the parent collection and stored within the subset collection.
 
