@@ -5,27 +5,25 @@
     if ( typeof define === 'function' && define.amd ) {
         define(
             [
-                'underscore',
-                'backbone'
+                'underscore'
             ],
-            function( _, Backbone ) {
+            function( _ ) {
                 root.ExoSuit = root.ExoSuit || {};
                 root.ExoSuit.Mixins = root.ExoSuit.Mixins || {};
-                return ( root.ExoSuit.Mixins.CappedSubsetMixin = factory( root, {}, _, Backbone ) );
+                return ( root.ExoSuit.Mixins.CappedSubsetMixin = factory( root, {}, _ ) );
             }
         );
     // Next for Node.js or CommonJS.
     } else if ( typeof exports !== 'undefined' ) {
         var _ = require( 'underscore' );
-        var Backbone = require( 'backbone' );
-        module.exports = factory( root, exports, _, Backbone );
+        module.exports = factory( root, exports, _ );
     // Finally, as a browser global.
     } else {
         root.ExoSuit = root.ExoSuit || {};
         root.ExoSuit.Mixins = root.ExoSuit.Mixins || {};
-        root.ExoSuit.Mixins.CappedSubsetMixin = factory( root, {}, root._, root.Backbone );
+        root.ExoSuit.Mixins.CappedSubsetMixin = factory( root, {}, root._ );
     }
-}( this, function( root, CappedSubsetMixin, _, Backbone ) {
+}( this, function( root, CappedSubsetMixin, _ ) {
     "use strict";
     CappedSubsetMixin = function() {
         var orderMethods = [ 'first', 'last' ];

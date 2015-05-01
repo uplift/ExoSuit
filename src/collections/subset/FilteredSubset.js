@@ -17,9 +17,9 @@
     } else {
         root.ExoSuit = root.ExoSuit || {};
         root.ExoSuit.Mixins = root.ExoSuit.Mixins || {};
-        root.ExoSuit.Mixins.FilteredSubsetMixin = factory( root, root.Backbone, {} );
+        root.ExoSuit.Mixins.FilteredSubsetMixin = factory( root, {} );
     }
-}( this, function( root, Backbone, FilteredSubsetMixin ) {
+}( this, function( root, FilteredSubsetMixin ) {
     "use strict";
     FilteredSubsetMixin = function() {
         // Cache current mixin methods to use later
