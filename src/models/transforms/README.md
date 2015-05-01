@@ -10,7 +10,7 @@ Once mixed in to a Backbone Model, define your transforms under the transforms p
 
 The transforms property is a hash of model property and transform definition name.
 
-    var MyModel = Backbone.Model.extend({
+    var MyModel = ExoSuit.Model.extend({
         mixins: [ ExoSuit.Mixins.TransformMixin ],
 
         defaults: {
@@ -33,7 +33,7 @@ You can define your own transformations on a model by declaring a property calle
 
 Deserialize processes the model attribute when model.parse() is called i.e. when data is received from the server. Serialize processes the model attribute when a model property is about to be sent to the datasource/server i.e. model.toJSON() or model.sync() with patch attributes.
 
-    var MyModel = Backbone.Model.extend({
+    var MyModel = ExoSuit.Model.extend({
         mixins: [ ExoSuit.Mixins.TransformMixin ],
 
         defaults: {

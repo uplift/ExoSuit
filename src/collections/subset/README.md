@@ -24,7 +24,7 @@ Default limit value is 100 and the default order value is 'last'.
 
 **Examples:**
 
-    var MyCollection = Backbone.Collection.extend({
+    var MyCollection = ExoSuit.Collection.extend({
         mixins: [ ExoSuit.Mixins.CappedSubsetMixin ],
         model: Backbone.Model,
         limit: 2,
@@ -56,7 +56,7 @@ Default filter function returns true for all parent models so should be overridd
 
 **Examples:**
 
-    var MyCollection = Backbone.Collection.extend({
+    var MyCollection = ExoSuit.Collection.extend({
         mixins: [ ExoSuit.Mixins.FilteredSubsetMixin ],
         model: Backbone.Model
     });

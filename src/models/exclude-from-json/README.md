@@ -10,7 +10,7 @@ After mixing in to a Backbone Model, add an excludeFromJSON property to the mode
 
 **Example:**
 
-    var MyModel = Backbone.Model.extend({
+    var MyModel = ExoSuit.Model.extend({
         mixins: [ ExoSuit.Mixins.ExcludeFromJSONMixin ],
 
         excludeFromJSON: [ "hello" ],

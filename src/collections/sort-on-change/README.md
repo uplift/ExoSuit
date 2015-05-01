@@ -10,7 +10,7 @@ If the comparator of the collection is not a string, the collection is sorted on
 
 **Examples:**
 
-    var MyCollection = Backbone.Collection.extend({
+    var MyCollection = ExoSuit.Collection.extend({
         mixins: [ ExoSuit.Mixins.SortOnChangeMixin ],
         model: Backbone.Model,
         comparator: "name"

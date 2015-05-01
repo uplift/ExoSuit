@@ -14,7 +14,7 @@ All computed properties are omitted from the toJSON call, so will never be sent 
 
 **Examples:**
 
-    var MyModel = Backbone.Model.extend({
+    var MyModel = ExoSuit.Model.extend({
         mixins: [ ExoSuit.Mixins.ComputedAttributesMixin ],
 
         computed: {

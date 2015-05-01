@@ -14,7 +14,7 @@ Unflatten accepts a hash of single depth attributes and returns the nested hash 
 
 **Example:**
 
-    var MyModel = Backbone.Model.extend({
+    var MyModel = ExoSuit.Model.extend({
         mixins: [ ExoSuit.Mixins.FlattenMixin ],
 
         defaults: {
