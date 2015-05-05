@@ -1,6 +1,6 @@
 {
   "name": "exosuit",
-  "version": "0.0.1",
+  "version": "0.3.0",
   "description": "A collection of mixins to be used to augment backbone applications",
   "authors": [
     "Uplift <git@upliftingcode.com>"
@@ -22,10 +22,22 @@
   "keywords": [
     "exosuit",
     "backbone",
-    "mixins"
+    "mixins",
+    "subset collections",
+    "pagination",
+    "filtered",
+    "cappped",
+    "computed attributes",
+    "flatten",
+    "transform",
+    "json",
+    "querystring",
+    "data binding",
+    "view events",
+    "view switcher",
+    "selectors"
   ],
   "license": "MIT",
-  "private": true,
   "devDependencies": {
     "chai": "^2.0.0",
     "chai-jquery": "^2.0.0",
