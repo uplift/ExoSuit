@@ -4,8 +4,6 @@
 [![devDependency Status](https://david-dm.org/uplift/ExoSuit/dev-status.svg)](https://david-dm.org/uplift/ExoSuit#info=devDependencies)
 [![Build Status](https://travis-ci.org/uplift/ExoSuit.svg)](https://travis-ci.org/uplift/ExoSuit)
 
-Coming Soon!
-
 A collection of mixins to be used to augment backbone.js applications.
 
 Compose the bits of functionality you need and create your own base modules to extend from for your applications need.
@@ -14,11 +12,11 @@ Compose the bits of functionality you need and create your own base modules to e
 
 ### Bower
 
-    bower install
+    bower install exosuit
 
 ### NPM
 
-    npm install
+    npm install exosuit
 
 ## Usage
 
