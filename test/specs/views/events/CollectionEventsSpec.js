@@ -117,7 +117,8 @@
                 // Create view
                 view = new CollectionEventsView();
                 expect( oldMethodStub.called ).to.be.true;
-                expect( oldMethodStub.callCount ).to.equal( 1 );
+                // Backbone 1.2.0 now calls undelegateEvents twice when initializing view
+                expect( oldMethodStub.callCount ).to.equal( 2 );
             });
 
             it('should call unbindCollectionEvents function', function() {
@@ -125,7 +126,8 @@
                 // Create view
                 view = new CollectionEventsView();
                 expect( stub.called ).to.be.true;
-                expect( stub.callCount ).to.equal( 1 );
+                // Backbone 1.2.0 now calls undelegateEvents twice when initializing view
+                expect( stub.callCount ).to.equal( 2 );
             });
         });
 

@@ -31,6 +31,8 @@
 
             if ( options.collectionEvents ) {
                 this.collectionEvents = options.collectionEvents;
+                // Backbone 1.2.0 stopped calling delegateEvents after initialize so need to bindCollectionEvents now
+                this.bindCollectionEvents();
             }
 
             if ( oldInitialize ) {
