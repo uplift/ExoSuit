@@ -31,6 +31,8 @@
 
             if ( options.modelEvents ) {
                 this.modelEvents = options.modelEvents;
+                // Backbone 1.2.0 stopped calling delegateEvents after initialize so need to bindModelEvents now
+                this.bindModelEvents();
             }
 
             if ( oldInitialize ) {

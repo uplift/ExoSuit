@@ -117,7 +117,8 @@
                 // Create view
                 view = new ModelEventsView();
                 expect( oldMethodStub.called ).to.be.true;
-                expect( oldMethodStub.callCount ).to.equal( 1 );
+                // Backbone 1.2.0 now calls undelegateEvents twice when initializing view
+                expect( oldMethodStub.callCount ).to.equal( 2 );
             });
 
             it('should call unbindModelEvents function', function() {
@@ -125,7 +126,8 @@
                 // Create view
                 view = new ModelEventsView();
                 expect( stub.called ).to.be.true;
-                expect( stub.callCount ).to.equal( 1 );
+                // Backbone 1.2.0 now calls undelegateEvents twice when initializing view
+                expect( stub.callCount ).to.equal( 2 );
             });
         });
 
@@ -254,7 +256,6 @@
                 view.remove();
             });
 
-            // Below test unbindModelEvents which is called through undelegateEvents which is called by delegateEvents when view is initialized
             it('should not remove any model event listeners if no model is set on the view', function() {
                 stub = sinon.stub( ModelEventsView.prototype, "stopListening" );
                 // Create view
@@ -263,6 +264,7 @@
                         "change": function() {}
                     }
                 });
+                view.unbindModelEvents();
                 expect( stub.called ).to.be.false;
             });
 
@@ -272,6 +274,7 @@
                 view = new ModelEventsView({
                     model: new Backbone.Model()
                 });
+                view.unbindModelEvents();
                 expect( stub.called ).to.be.false;
             });
 
@@ -285,6 +288,7 @@
                         "change": function() {}
                     }
                 });
+                view.unbindModelEvents();
                 expect( stub.called ).to.be.true;
             });
 
@@ -300,6 +304,7 @@
                         "destroy": function() {}
                     }
                 });
+                view.unbindModelEvents();
                 expect( stub.called ).to.be.true;
                 expect( stub.callCount ).to.equal( 4 );
             });
@@ -316,6 +321,7 @@
                         "change": func
                     }
                 });
+                view.unbindModelEvents();
                 expect( stub.called ).to.be.true;
                 expect( stub.callCount ).to.equal( 1 );
                 expect( stub.calledWith( view.model, "change", func ) ).to.be.true;
@@ -330,6 +336,7 @@
                         "change": "test"
                     }
                 });
+                view.unbindModelEvents();
                 expect( stub.called ).to.be.false;
             });
 
@@ -346,6 +353,7 @@
                         "change": "test"
                     }
                 });
+                view.unbindModelEvents();
                 expect( stub.called ).to.be.true;
                 expect( stub.callCount ).to.equal( 1 );
                 expect( stub.calledWith( view.model, "change", func ) ).to.be.true;
