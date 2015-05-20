@@ -14,11 +14,11 @@ Compose the bits of functionality you need and create your own base modules to e
 
 ### Bower
 
-    bower install exosuit@0.3.0
+    bower install exosuit@0.3.1
 
 ### NPM
 
-    npm install exosuit@0.3.0
+    npm install exosuit@0.3.1
 
 ## Usage
 
