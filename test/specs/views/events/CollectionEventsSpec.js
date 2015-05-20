@@ -255,7 +255,6 @@
                 view.remove();
             });
 
-            // Below test unbindModelEvents which is called through undelegateEvents which is called by delegateEvents when view is initialized
             it('should not remove any collection event listeners if no collection is set on the view', function() {
                 stub = sinon.stub( CollectionEventsView.prototype, "stopListening" );
                 // Create view
@@ -264,6 +263,7 @@
                         "add": function() {}
                     }
                 });
+                view.unbindCollectionEvents();
                 expect( stub.called ).to.be.false;
             });
 
@@ -273,6 +273,7 @@
                 view = new CollectionEventsView({
                     collection: new Backbone.Collection()
                 });
+                view.unbindCollectionEvents();
                 expect( stub.called ).to.be.false;
             });
 
@@ -285,6 +286,7 @@
                         "add": function() {}
                     }
                 });
+                view.unbindCollectionEvents();
                 expect( stub.called ).to.be.true;
             });
 
@@ -300,6 +302,7 @@
                         "sort": function() {}
                     }
                 });
+                view.unbindCollectionEvents();
                 expect( stub.called ).to.be.true;
                 expect( stub.callCount ).to.equal( 4 );
             });
@@ -316,6 +319,7 @@
                         "add": func
                     }
                 });
+                view.unbindCollectionEvents();
                 expect( stub.called ).to.be.true;
                 expect( stub.callCount ).to.equal( 1 );
                 expect( stub.calledWith( view.collection, "add", func ) ).to.be.true;
@@ -330,6 +334,7 @@
                         "add": "test"
                     }
                 });
+                view.unbindCollectionEvents();
                 expect( stub.called ).to.be.false;
             });
 
@@ -346,6 +351,7 @@
                         "add": "test"
                     }
                 });
+                view.unbindCollectionEvents();
                 expect( stub.called ).to.be.true;
                 expect( stub.callCount ).to.equal( 1 );
                 expect( stub.calledWith( view.collection, "add", func ) ).to.be.true;
