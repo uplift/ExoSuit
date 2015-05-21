@@ -34,30 +34,6 @@
         var oldExecute = this.execute,
             oldSetTitle = this.setTitle;
 
-        // Patch route function to pass the name of route callback function to execute like it does on the current master branch of backbone
-        // Only patch if execute has 2 function parameters ( might not be best way ) which should mean route hasnt been overwritten yet to support name argument
-        // Remove if later Backbone release supports changes in master
-        if ( oldExecute.length === 2 ) {
-            this.route = function( route, name, callback ) {
-                if ( !_.isRegExp( route ) ) { route = this._routeToRegExp( route ); }
-                if ( _.isFunction( name ) ) {
-                    callback = name;
-                    name = '';
-                }
-                if ( !callback ) { callback = this[ name ]; }
-                var router = this;
-                Backbone.history.route( route, function( fragment ) {
-                    var args = router._extractParameters( route, fragment );
-                    if ( router.execute( callback, args, name ) !== false ) {
-                        router.trigger.apply( router, [ 'route:' + name ].concat( args ) );
-                        router.trigger( 'route', name, args );
-                        Backbone.history.trigger( 'route', router, name, args );
-                    }
-                } );
-                return this;
-            };
-        }
-
         // Set defaults if properties arent set
         this.titlePrefix = this.titlePrefix || "";
         this.titleSuffix = this.titleSuffix || "";
