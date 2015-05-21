@@ -174,6 +174,6 @@ Licensed under the [MIT](http://www.opensource.org/licenses/MIT) license.
 
 # Changelog
 
-**0.4.0** - Fix mixins affected by backbone 1.2.0 release.
-**0.3.1** - Fix Backbone and Underscore dependencies to 1.1.2 and 1.7.0 respectively for backwards compatibility. For old backbone versions, bugs will be fixed on v0.3 branch but no further updates or new mixins will be maintained for backbone versions lower than 1.2.0.
-**0.3.0** - Initial Release.
+**0.4.0** - Fix mixins affected by backbone 1.2.0 release.  
+**0.3.1** - Fix Backbone and Underscore dependencies to 1.1.2 and 1.7.0 respectively for backwards compatibility. For old backbone versions, bugs will be fixed on v0.3 branch but no further updates or new mixins will be maintained for backbone versions lower than 1.2.0.  
+**0.3.0** - Initial Release.  
