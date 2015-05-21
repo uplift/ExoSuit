@@ -14,14 +14,14 @@
         );
     // Next for Node.js or CommonJS.
     } else if ( typeof exports !== 'undefined' ) {
-        var fs = require( 'fs' );
+        /*var fs = require( 'fs' );
         var expect = require( 'chai' ).expect;
         var Backbone = require( 'backbone' );
         var $ = require( 'jquery' )( require( 'jsdom' ).jsdom( fs.readFileSync( './test/specs/fixtures/main.html' ) ).parentWindow );
         Backbone.$ = $;
         var sinon = require( 'sinon' );
         var SelectListMixin = require( '../../../../src/views/select-list/Select' );
-        factory( Backbone, expect, sinon, SelectListMixin );
+        factory( Backbone, expect, sinon, SelectListMixin );*/
     // Finally, as a browser global.
     } else {
         factory( root.Backbone, root.expect, root.sinon, root.ExoSuit.Mixins.SelectListMixin );
