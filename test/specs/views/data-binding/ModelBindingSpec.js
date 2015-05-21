@@ -6,20 +6,21 @@
             [
                 'backbone',
                 'jquery',
+                'sinon',
                 'views/data-binding/ModelBinding'
             ],
-            function( Backbone, $, ModelBindingMixin ) {
-                factory( Backbone, $, root.expect, ModelBindingMixin );
+            function( Backbone, $, sinon, ModelBindingMixin ) {
+                factory( root.document, Backbone, $, root.expect, sinon, ModelBindingMixin );
             }
         );
     // Next for Node.js or CommonJS.
     } else if ( typeof exports !== 'undefined' ) {
-        // Uses jquery which needs window object so don't run these tests in node
+
     // Finally, as a browser global.
     } else {
-        factory( root.Backbone, root.jQuery, root.expect, root.ExoSuit.Mixins.ModelBindingMixin );
+        factory( root.document, root.Backbone, root.jQuery, root.expect, root.sinon, root.ExoSuit.Mixins.ModelBindingMixin );
     }
-}( this, function( Backbone, $, expect, ModelBindingMixin ) {
+}( this, function( document, Backbone, $, expect, sinon, ModelBindingMixin ) {
     describe('Model Binding View Mixin ', function () {
         var view, BindingView, stub, stubTwo, stubThree, oldMethodStub;
 
@@ -144,7 +145,8 @@
                 // Create view
                 view = new BindingView();
                 expect( oldMethodStub.called ).to.be.true;
-                expect( oldMethodStub.callCount ).to.equal( 1 );
+                // Backbone 1.2.0 now calls undelegateEvents twice when initializing view
+                expect( oldMethodStub.callCount ).to.equal( 2 );
             });
 
             it('should call _unbindViewFromModel function', function() {
@@ -152,7 +154,8 @@
                 // Create view
                 view = new BindingView();
                 expect( stub.called ).to.be.true;
-                expect( stub.callCount ).to.equal( 1 );
+                // Backbone 1.2.0 now calls undelegateEvents twice when initializing view
+                expect( stub.callCount ).to.equal( 2 );
             });
         });
 

@@ -202,7 +202,9 @@
         };
 
         this._unbindViewFromModel = function() {
-            this.$el.off( ".bindEvents" + this.cid );
+            if ( this.$el ) {
+                this.$el.off( ".bindEvents" + this.cid );
+            }
         };
     };
 
