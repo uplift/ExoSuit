@@ -42,7 +42,7 @@ if ( window.__karma__ ) {
 requirejs.config({
     baseUrl: baseUrl,
     paths: {
-        "exosuit"           : "./",
+        "exosuit"           : ".",
         "jquery"            : "../test/bower_components/jquery/dist/jquery",
         "underscore"        : "../test/bower_components/underscore/underscore",
         "backbone"          : "../test/bower_components/backbone/backbone",
