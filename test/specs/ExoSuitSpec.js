@@ -99,16 +99,19 @@
             });
         });
 
-        describe('ExoSuit.View()', function () {
-            it('should be an instance of Backbone.View', function() {
-                var view = new ExoSuit.View();
-                expect( view instanceof Backbone.View ).to.be.true;
-            });
+        // Cant run view tests in node since Backbone 1.2.0 due to its use of document
+        if ( typeof exports === 'undefined' ) {
+            describe('ExoSuit.View()', function () {
+                it('should be an instance of Backbone.View', function() {
+                    var view = new ExoSuit.View();
+                    expect( view instanceof Backbone.View ).to.be.true;
+                });
 
-            it('should have mixin extend method as the class extend method', function() {
-                expect( ExoSuit.View.extend ).to.equal( ExoSuit.MixinExtend );
+                it('should have mixin extend method as the class extend method', function() {
+                    expect( ExoSuit.View.extend ).to.equal( ExoSuit.MixinExtend );
+                });
             });
-        });
+        }
 
         describe('ExoSuit.Router()', function () {
             it('should be an instance of Backbone.Router', function() {
