@@ -10,7 +10,7 @@
                 'views/data-binding/ModelBinding'
             ],
             function( Backbone, $, sinon, ModelBindingMixin ) {
-                factory( root.document, Backbone, $, root.expect, sinon, ModelBindingMixin );
+                factory( Backbone, $, root.expect, sinon, ModelBindingMixin );
             }
         );
     // Next for Node.js or CommonJS.
@@ -26,9 +26,9 @@
         factory( window.document, Backbone, $, expect, sinon, ModelBindingMixin );*/
     // Finally, as a browser global.
     } else {
-        factory( root.document, root.Backbone, root.jQuery, root.expect, root.sinon, root.ExoSuit.Mixins.ModelBindingMixin );
+        factory( root.Backbone, root.jQuery, root.expect, root.sinon, root.ExoSuit.Mixins.ModelBindingMixin );
     }
-}( this, function( document, Backbone, $, expect, sinon, ModelBindingMixin ) {
+}( this, function( Backbone, $, expect, sinon, ModelBindingMixin ) {
     describe('Model Binding View Mixin ', function () {
         var view, BindingView, stub, stubTwo, stubThree, oldMethodStub;
 
