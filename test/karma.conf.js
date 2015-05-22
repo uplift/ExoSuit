@@ -4,10 +4,20 @@ module.exports = function(config) {
         basePath    : '../',
 
         // frameworks to use
-        frameworks  : [ 'mocha', 'sinon', 'chai-jquery', 'jquery-2.1.0', 'chai' ],
+        frameworks  : [ 'mocha', 'chai-jquery', 'jquery-2.1.0', 'chai' ],
 
         // list of files / patterns to load in the browser
         files: [
+            {
+                pattern : 'test/bower_components/sinon/index.js',
+                included: true,
+                served: true
+            },
+            {
+                pattern : 'test/bower_components/jquery/dist/jquery.js',
+                included: true,
+                served: true
+            },
             {
                 pattern : 'test/bower_components/underscore/underscore.js',
                 included: true,
@@ -15,6 +25,11 @@ module.exports = function(config) {
             },
             {
                 pattern : 'test/bower_components/backbone/backbone.js',
+                included: true,
+                served: true
+            },
+            {
+                pattern : 'src/models/flatten/*.js',
                 included: true,
                 served: true
             },
@@ -78,10 +93,10 @@ module.exports = function(config) {
         // - Safari (only Mac; has to be installed with `npm install karma-safari-launcher`)
         // - PhantomJS
         // - IE (only Windows; has to be installed with `npm install karma-ie-launcher`)
-        browsers    : [ 'Chrome', 'ChromeCanary', 'Firefox', 'Opera', 'Safari' ],
+        browsers    : [ 'Chrome', 'ChromeCanary', 'Firefox', 'Safari' ],
 
         // If browser does not capture in given timeout [ms], kill it
-        captureTimeout: 60000,
+        captureTimeout: 180000,
 
         // Continuous Integration mode
         // if true, it capture browsers, run tests and exit
