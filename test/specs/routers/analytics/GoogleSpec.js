@@ -51,6 +51,10 @@
             it('should call legacy google analytics code when _gaq is defined', function() {
                 window._gaq = [];
                 gaStub = sinon.stub( window._gaq, "push" );
+                // FIXME: Strangely in karma urlStub is already wrapped and not restored in afterEach???
+                if ( urlStub ) {
+                    urlStub.restore();
+                }
                 urlStub = sinon.stub( Backbone.history, "getFragment" ).returns( "pageone" );
                 // Create view
                 var router = new Router();
@@ -63,6 +67,10 @@
             it('should prepend a / before the url if one doesnt exist', function() {
                 window._gaq = [];
                 gaStub = sinon.stub( window._gaq, "push" );
+                // FIXME: Strangely in karma urlStub is already wrapped and not restored in afterEach???
+                if ( urlStub ) {
+                    urlStub.restore();
+                }
                 urlStub = sinon.stub( Backbone.history, "getFragment" ).returns( "pageone" );
                 // Create view
                 var router = new Router();
@@ -81,6 +89,10 @@
                 window.GoogleAnalyticsObject = "ga";
                 window.ga = function() {};
                 gaStub = sinon.stub( window, "ga" );
+                // FIXME: Strangely in karma urlStub is already wrapped and not restored in afterEach???
+                if ( urlStub ) {
+                    urlStub.restore();
+                }
                 urlStub = sinon.stub( Backbone.history, "getFragment" ).returns( "pageone" );
                 // Create view
                 var router = new Router();
@@ -95,6 +107,10 @@
                 window.GoogleAnalyticsObject = "ga";
                 window.ga = function() {};
                 gaStub = sinon.stub( window, "ga" );
+                // FIXME: Strangely in karma urlStub is already wrapped and not restored in afterEach???
+                if ( urlStub ) {
+                    urlStub.restore();
+                }
                 urlStub = sinon.stub( Backbone.history, "getFragment" ).returns( "pageone" );
                 // Create view
                 var router = new Router();

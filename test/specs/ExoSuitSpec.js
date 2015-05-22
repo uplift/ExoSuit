@@ -29,6 +29,10 @@
 
         describe('MixinExtend()', function () {
             beforeEach(function() {
+                // FIXME: Strangely in karma oldMethodSpy is already wrapped and not restored in afterEach???
+                if ( oldMethodSpy ) {
+                    oldMethodSpy.restore();
+                }
                 oldMethodSpy = sinon.spy( Backbone.Model, "extend" );
                 MixinModule = Backbone.Model.extend();
                 oldMethodSpy.reset();

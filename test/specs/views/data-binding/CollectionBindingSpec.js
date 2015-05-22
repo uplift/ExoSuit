@@ -434,6 +434,10 @@
 
             it('should call render of the new view', function() {
                 var model = new Backbone.Model();
+                // FIXME: Strangely in karma urlStub is already wrapped and not restored in afterEach???
+                if ( stub ) {
+                    stub.restore();
+                }
                 stub = sinon.stub( Backbone.View.prototype, "render" );
                 var subview = new Backbone.View();
                 var temp = sinon.stub( view, "createSubView" ).returns( subview );
