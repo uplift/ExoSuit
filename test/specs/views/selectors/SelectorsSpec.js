@@ -34,7 +34,7 @@
         before(function() {
             // If karma, add fixtures html
             if ( typeof __html__ !== "undefined" ) {
-                document.body.innerHTML = __html__[ 'tests/specs/fixtures/main.html' ];
+                document.body.innerHTML = __html__[ 'test/specs/fixtures/main.html' ];
             }
             // Create fixture DOM placeholder
             this.fixture = $( "<div id='selector-area'></div>" );
