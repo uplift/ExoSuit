@@ -13,7 +13,7 @@
     "url": "https://github.com/uplift/ExoSuit/issues"
   },
   "scripts": {
-    "test": "gulp test-node",
+    "test": "./node_modules/karma/bin/karma start test/karma.conf.js --browsers PhantomJS",
     "dist-mixins": "browserify --exclude underscore --exclude backbone --standalone exosuit index.js > dist/exosuit-mixins.js",
     "dist-main": "browserify --exclude underscore --exclude backbone --standalone exosuit src/ExoSuit.js > dist/exosuit.js",
     "dist": "npm run dist-main & npm run dist-mixins"
@@ -61,6 +61,7 @@
     "karma-jquery": "^0.1.0",
     "karma-mocha": "^0.1.9",
     "karma-opera-launcher": "^0.1.0",
+    "karma-phantomjs-launcher": "^0.1.4",
     "karma-requirejs": "^0.2.2",
     "karma-safari-launcher": "^0.1.1",
     "karma-sinon": "^1.0.3",
