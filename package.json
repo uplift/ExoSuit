@@ -13,7 +13,7 @@
     "url": "https://github.com/uplift/ExoSuit/issues"
   },
   "scripts": {
-    "test": "./node_modules/karma/bin/karma start test/karma.conf.js --browsers PhantomJS",
+    "test": "bower install && ./node_modules/karma/bin/karma start test/karma.conf.js --browsers PhantomJS",
     "dist-mixins": "browserify --exclude underscore --exclude backbone --standalone exosuit index.js > dist/exosuit-mixins.js",
     "dist-main": "browserify --exclude underscore --exclude backbone --standalone exosuit src/ExoSuit.js > dist/exosuit.js",
     "dist": "npm run dist-main & npm run dist-mixins"
