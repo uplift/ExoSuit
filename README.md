@@ -1,7 +1,7 @@
 # ExoSuit
 
-[![Bower version](https://badge.fury.io/bo/exosuit.svg)](http://badge.fury.io/bo/bullhorn-handlebars-helpers)
-[![NPM version](https://badge.fury.io/js/exosuit.svg)](http://badge.fury.io/js/bullhorn-handlebars-helpers)
+[![Bower version](https://badge.fury.io/bo/exosuit.svg)](http://badge.fury.io/bo/exosuit)
+[![NPM version](https://badge.fury.io/js/exosuit.svg)](http://badge.fury.io/js/exosuit)
 [![Dependency Status](https://david-dm.org/uplift/ExoSuit.svg)](https://david-dm.org/uplift/ExoSuit)
 [![devDependency Status](https://david-dm.org/uplift/ExoSuit/dev-status.svg)](https://david-dm.org/uplift/ExoSuit#info=devDependencies)
 [![Build Status](https://travis-ci.org/uplift/ExoSuit.svg)](https://travis-ci.org/uplift/ExoSuit)
