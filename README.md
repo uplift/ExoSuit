@@ -10,6 +10,8 @@ A collection of mixins to be used to augment backbone.js applications.
 
 Compose the bits of functionality you need and create your own base modules to extend from for your applications need.
 
+**Important:** With the release of Backbone 1.2.0, some changes to ExoSuit were needed, resulting in the current version only supporting 1.2.0. To use ExoSuit with Backbone 1.1.2, please see the changelog at the bottom of the README.
+
 ## Install
 
 ### Bower
