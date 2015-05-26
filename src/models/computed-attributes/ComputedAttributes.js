@@ -3,6 +3,7 @@
     "use strict";
     // Set up appropriately for the environment.
     // Start with AMD.
+    /* istanbul ignore next */
     if ( typeof define === 'function' && define.amd ) {
         define(
             [
