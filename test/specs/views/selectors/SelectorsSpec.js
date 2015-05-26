@@ -59,6 +59,7 @@
 
             afterEach(function() {
                 view.remove();
+                oldMethodStub.restore();
             });
 
             it('should set this._selectors empty object from the mixin initialize function', function() {
@@ -76,41 +77,71 @@
             });
         });
 
-        describe('delegateEvents()', function () {
+        describe('delegate()', function () {
             beforeEach(function() {
                 // Add dom to fixture
                 this.fixture.html( "<div id='selector-el'><button type='button' id='button'></div>" );
                 // Create View definition based on SelectorView module
                 SelectorView = Backbone.View.extend({
                     el: "#selector-el",
-                    events: {
-                        "click myButton": "test"
-                    },
                     selectors: {
                         "myButton" : "#button"
                     },
                     test: function() {
-                        this.success = true;
+                        return 10;
                     }
                 });
-                oldMethodStub = sinon.stub( SelectorView.prototype, "delegateEvents" );
+                oldMethodStub = sinon.stub( SelectorView.prototype, "delegate" );
                 SelectorMixin.call( SelectorView.prototype );
             });
 
             afterEach(function() {
-                // Clear down fixture DOM
-                this.fixture.empty();
+                view.remove();
                 oldMethodStub.restore();
             });
 
-            it('should call the old delegateEvents function when the delegateEvents function is called with events object with correct selectors', function() {
+            it('should call the old delegate function with correct selectors when the delegate function is called', function() {
                 // Create view
                 view = new SelectorView();
-                $( "#button" ).click();
+                view.delegate( "click", "myButton", view.test );
                 expect( oldMethodStub.called ).to.be.true;
                 expect( oldMethodStub.callCount ).to.equal( 1 );
-                expect( oldMethodStub.calledWithMatch( { "click #button": "test" } ) ).to.be.true;
-                expect( oldMethodStub.neverCalledWithMatch( { "click myButton": "test" } ) ).to.be.true;
+                expect( oldMethodStub.calledWithMatch( "click", "#button", view.test ) ).to.be.true;
+                expect( oldMethodStub.neverCalledWithMatch( "click", "myButton", view.test ) ).to.be.true;
+            });
+        });
+
+        describe('undelegate()', function () {
+            beforeEach(function() {
+                // Add dom to fixture
+                this.fixture.html( "<div id='selector-el'><button type='button' id='button'></div>" );
+                // Create View definition based on SelectorView module
+                SelectorView = Backbone.View.extend({
+                    el: "#selector-el",
+                    selectors: {
+                        "myButton" : "#button"
+                    },
+                    test: function() {
+                        return 10;
+                    }
+                });
+                oldMethodStub = sinon.stub( SelectorView.prototype, "undelegate" );
+                SelectorMixin.call( SelectorView.prototype );
+            });
+
+            afterEach(function() {
+                view.remove();
+                oldMethodStub.restore();
+            });
+
+            it('should call the old undelegate function with correct selectors when the undelegate function is called', function() {
+                // Create view
+                view = new SelectorView();
+                view.undelegate( "click", "myButton", view.test );
+                expect( oldMethodStub.called ).to.be.true;
+                expect( oldMethodStub.callCount ).to.equal( 1 );
+                expect( oldMethodStub.calledWithMatch( "click", "#button", view.test ) ).to.be.true;
+                expect( oldMethodStub.neverCalledWithMatch( "click", "myButton", view.test ) ).to.be.true;
             });
         });
 

@@ -29,7 +29,8 @@
     SelectorMixin = function() {
         // Cache current mixin methods to use later
         var oldInitialize = this.initialize,
-            oldDelegateEvents = this.delegateEvents,
+            oldDelegate = this.delegate,
+            oldUnDelegate = this.undelegate,
             oldRemove = this.remove;
 
         // Override constructor
@@ -42,33 +43,26 @@
             }
         };
 
-        // Extend delegateEvents function to cater for selector keys
-        this.delegateEvents = function( events ) {
-            var match, eventName, selector, newSelector;
-
-            if ( !( events || ( events = _.result( this, 'events' ) ) ) ) {
-                return this;
+        // Extend delegate function to cater for selector keys
+        this.delegate = function( eventName, selector, listener ) {
+            // If selector is a selector key
+            if ( this.hasSelector( selector ) ) {
+                // Get the selector for the key and use that for delegate selector
+                selector = this.selectors[ selector ];
             }
+            // Call mixin (i.e. Backbone) delegate function
+            oldDelegate.call( this, eventName, selector, listener );
+        };
 
-            // Loop over events
-            for ( var key in events ) {
-                // Split event and selector out from key
-                match = key.match( /^(\S+)\s*(.*)$/ );
-                eventName = match[ 1 ];
-                selector = match[ 2 ];
-                // If selector is a selector key
-                if ( this.hasSelector( selector ) ) {
-                    // Get the selector for the key and use that for delegate selector
-                    newSelector = this.selectors[ selector ];
-                    // Replace current key in events object with correct selector from selectors list
-                    events[ eventName + " " + newSelector ] = events[ key ];
-                    // Delete old event with selector name as no longer needed
-                    delete events[ key ];
-                }
+        // Extend undelegate function to cater for selector keys
+        this.undelegate = function( eventName, selector, listener ) {
+            // If selector is a selector key
+            if ( this.hasSelector( selector ) ) {
+                // Get the selector for the key and use that for undelegate selector
+                selector = this.selectors[ selector ];
             }
-
-            // Call mixin (i.e. Backbone) delegateEvents function
-            return oldDelegateEvents.call( this, events );
+            // Call mixin (i.e. Backbone) undelegate function
+            oldUnDelegate.call( this, eventName, selector, listener );
         };
 
         // Get a selector from the view and cache it for later use
