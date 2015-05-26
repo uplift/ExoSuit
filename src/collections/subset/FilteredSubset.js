@@ -5,22 +5,27 @@
     /* istanbul ignore next */
     if ( typeof define === 'function' && define.amd ) {
         define(
-            function() {
+            [
+                'underscore'
+            ],
+            function( _ ) {
                 root.ExoSuit = root.ExoSuit || {};
                 root.ExoSuit.Mixins = root.ExoSuit.Mixins || {};
-                return ( root.ExoSuit.Mixins.FilteredSubsetMixin = factory( root, {} ) );
+                return ( root.ExoSuit.Mixins.FilteredSubsetMixin = factory( root, _, {} ) );
             }
         );
     // Next for Node.js or CommonJS.
     } else if ( typeof exports !== 'undefined' ) {
-        module.exports = factory( root, exports );
+        var _ = require( 'underscore' );
+
+        module.exports = factory( root, _, exports );
     // Finally, as a browser global.
     } else {
         root.ExoSuit = root.ExoSuit || {};
         root.ExoSuit.Mixins = root.ExoSuit.Mixins || {};
-        root.ExoSuit.Mixins.FilteredSubsetMixin = factory( root, {} );
+        root.ExoSuit.Mixins.FilteredSubsetMixin = factory( root, root._, {} );
     }
-}( this, function( root, FilteredSubsetMixin ) {
+}( this, function( root, _, FilteredSubsetMixin ) {
     "use strict";
     FilteredSubsetMixin = function() {
         // Cache current mixin methods to use later
@@ -67,7 +72,7 @@
                 return;
             }
 
-            return this.parent.filter( this.filter );
+            return this.parent.filter( _.bind( this.filter, this ) );
         };
 
         this.__add = function( model, collection, options ) {
