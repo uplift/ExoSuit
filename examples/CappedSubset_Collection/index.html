@@ -1,0 +1,159 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Capped Subset Collection</title>
+</head>
+<body>
+    <section>
+        <div>
+            <h1>Full Collection</h1>
+            <ul id="full_collection"></ul>
+        </div>
+        <div>
+            <h1>Capped Collection</h1>
+            <ul id="subset_collection"></ul>
+        </div>
+    </section>
+    <section>
+        <div>
+            <p>Add name to full collection.</p>
+            <input type="text" id="name" placeholder="Name" />
+            <input type="submit" id="submit" value="Add to Full Collection" />
+            <p>Remove name from full collection</p>
+            <select id="full_coll_list"></select>
+            <input type="submit" id="remove" value="Remove From Full Collection">
+            <p>Resize capped collection</p>
+            <input type="text" id="number" />
+            <input type="submit" id="resize" value="Resize Capped Collection" />
+            <p>Reorder capped collection</p>
+            <input type="submit" id="reorder" value="Reorder Capped Collection" />
+        </div>
+    </section>
+    <script src="../../test/bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../test/bower_components/underscore/underscore.js"></script>
+    <script src="../../test/bower_components/backbone/backbone.js"></script>
+    <script src="../../src/collections/subset/CappedSubset.js"></script>
+    <script src="../../src/ExoSuit.js"></script>
+    <script>
+        var CappedCollection = ExoSuit.Collection.extend({
+            mixins: [ ExoSuit.Mixins.CappedSubsetMixin ],
+            model: Backbone.Model
+        });
+
+        var fullCollection = new Backbone.Collection([
+            {
+                name: "Bob"
+            },
+            {
+                name: "Clive"
+            },
+            {
+                name: "Debra"
+            },
+            {
+                name: "Edward"
+            },
+            {
+                name: "Helen"
+            },
+            {
+                name: "Mary"
+            },
+            {
+                name: "Matthew"
+            },
+            {
+                name: "Robert"
+            },
+            {
+                name: "Steve"
+            }
+        ]);
+        var cappedCollection = new CappedCollection( null, {
+            parent: fullCollection,
+            limit: 5
+        });
+
+        function displayFullCollection() {
+            var fullList = fullCollection.map(function( model ) {
+                return "<li>" + model.get( "name" ) + "</li>";
+            }).join( "" );
+
+            $( "#full_collection" ).html( fullList );
+        }
+
+        function displayFullCollectionSelectList() {
+            var fullList = fullCollection.map(function( model ) {
+                return "<option value='" + model.get( "name" ) + "'>" + model.get( "name" ) + "</li>";
+            }).join( "" );
+
+            $( "#full_coll_list" ).html( fullList );
+        }
+
+        function displaySubsetCollection() {
+            var cappedList = cappedCollection.map(function( model ) {
+                return "<li>" + model.get( "name" ) + "</li>";
+            }).join( "" );
+
+            $( "#subset_collection" ).html( cappedList );
+        }
+
+        $( "#submit" ).on( "click", function( e ) {
+            e.preventDefault();
+
+            var name = $( "#name" ).val();
+
+            if ( name ) {
+                fullCollection.add( { name: name } );
+            }
+
+            displayFullCollection();
+            displayFullCollectionSelectList();
+            displaySubsetCollection();
+        });
+
+        $( "#remove" ).on( "click", function( e ) {
+            e.preventDefault();
+
+            var name = $( "#full_coll_list" ).val();
+
+            var remove = fullCollection.find(function( model ) {
+                return model.get( "name" ) === name;
+            })
+
+            if ( name ) {
+                fullCollection.remove( remove );
+            }
+
+            displayFullCollection();
+            displayFullCollectionSelectList();
+            displaySubsetCollection();
+        });
+
+        $( "#resize" ).on( "click", function( e ) {
+            e.preventDefault();
+
+            var size = parseInt( $( "#number" ).val(), 10 );
+
+            if ( typeof size === 'number' ) {
+                cappedCollection.resize( size );
+            }
+
+            displaySubsetCollection();
+        });
+
+        $( "#reorder" ).on( "click", function( e ) {
+            e.preventDefault();
+
+            cappedCollection.reorder();
+
+
+            displaySubsetCollection();
+        });
+
+        displayFullCollection();
+        displayFullCollectionSelectList();
+        displaySubsetCollection();
+    </script>
+</body>
+</html>
