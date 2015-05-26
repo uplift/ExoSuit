@@ -15,15 +15,7 @@
         );
     // Next for Node.js or CommonJS.
     } else if ( typeof exports !== 'undefined' ) {
-        /*var fs = require( 'fs' );
-        var expect = require( 'chai' ).expect;
-        var Backbone = require( 'backbone' );
-        var window = require( 'jsdom' ).jsdom( fs.readFileSync( './test/specs/fixtures/main.html' ) ).parentWindow;
-        var $ = require( 'jquery' )( window );
-        Backbone.$ = $;
-        var sinon = require( 'sinon' );
-        var CollectionBindingMixin = require( '../../../../src/views/data-binding/CollectionBinding' );
-        factory( Backbone, $, expect, sinon, CollectionBindingMixin );*/
+        /* This is a Client side mixin only */
     // Finally, as a browser global.
     } else {
         factory( root.Backbone, root.jQuery, root.expect, root.sinon, root.ExoSuit.Mixins.CollectionBindingMixin );
