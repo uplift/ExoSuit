@@ -1,0 +1,123 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Route Title Router</title>
+</head>
+<body>
+    <section>
+        <p>Click the route links below and watch title change.</p>
+        <p>
+            <a href="#">Home</a>
+            <a href="#/user-list">Users</a>
+            <a href="#/user/1">User 1</a>
+            <a href="#/user/2">User 2</a>
+            <a href="#/user/3">User 3</a>
+            <a href="#/admin">Admin (Default Title)</a>
+        </p>
+    </section>
+    <section>
+        <h2>Code</h2>
+        <pre><code>
+            var TitleRouter = ExoSuit.Router.extend({
+                mixins: [ ExoSuit.Mixins.RouteTitleMixin ],
+
+                routes: {
+                    "": "home",
+                    "user-list": "userList",
+                    "user/:id": "user",
+                    "admin": "admin"
+                },
+
+                routeConfig: {
+                    home: {
+                        title: "Homepage"
+                    },
+                    userList: {
+                        title: "User List"
+                    },
+                    user: {
+                        title: function( args ) {
+                            return "User: " + args[ 0 ];
+                        }
+                    }
+                },
+
+                defaultTitle: "Default Title",
+                titlePrefix: "My Site - ",
+
+                initialize: function() {
+                    Backbone.history.start();
+                },
+
+                home: function() {
+                    console.log( "Home Route" );
+                },
+                userList: function() {
+                    console.log( "User List Route" );
+                },
+                user: function() {
+                    console.log( "User Route" );
+                },
+                admin: function() {
+                    console.log( "Admin Route" );
+                }
+            });
+
+            var app = new TitleRouter();
+        </code></pre>
+    </section>
+    <script src="../../test/bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../test/bower_components/underscore/underscore.js"></script>
+    <script src="../../test/bower_components/backbone/backbone.js"></script>
+    <script src="../../src/routers/route-title/RouteTitle.js"></script>
+    <script src="../../src/ExoSuit.js"></script>
+    <script>
+        var TitleRouter = ExoSuit.Router.extend({
+            mixins: [ ExoSuit.Mixins.RouteTitleMixin ],
+
+            routes: {
+                "": "home",
+                "user-list": "userList",
+                "user/:id": "user",
+                "admin": "admin"
+            },
+
+            routeConfig: {
+                home: {
+                    title: "Homepage"
+                },
+                userList: {
+                    title: "User List"
+                },
+                user: {
+                    title: function( args ) {
+                        return "User: " + args[ 0 ];
+                    }
+                }
+            },
+
+            defaultTitle: "Default Title",
+            titlePrefix: "My Site - ",
+
+            initialize: function() {
+                Backbone.history.start();
+            },
+
+            home: function() {
+                console.log( "Home Route" );
+            },
+            userList: function() {
+                console.log( "User List Route" );
+            },
+            user: function() {
+                console.log( "User Route" );
+            },
+            admin: function() {
+                console.log( "Admin Route" );
+            }
+        });
+
+        var app = new TitleRouter();
+    </script>
+</body>
+</html>

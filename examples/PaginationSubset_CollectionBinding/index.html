@@ -1,0 +1,195 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Pagination Subset Collection</title>
+</head>
+<body>
+    <section>
+        <div>
+            <h1>Full Collection</h1>
+            <ul id="full_collection"></ul>
+        </div>
+        <div>
+            <h1>Paging Collection</h1>
+            <table id="subset_collection"></table>
+        </div>
+    </section>
+    <section>
+        <div>
+            <p>Add name to full collection.</p>
+            <input type="text" id="name" placeholder="Name" />
+            <input type="text" id="age" placeholder="Age" />
+            <input type="submit" id="submit" value="Add to Full Collection" />
+            <p>Remove name from full collection</p>
+            <select id="full_coll_list"></select>
+            <input type="submit" id="remove" value="Remove From Full Collection">
+            <p>Resize items per page collection</p>
+            <input type="text" id="number" />
+            <input type="submit" id="items" value="Resize Items Per Page" />
+            <p>Reorder capped collection</p>
+            <button id="first">First Page</button>
+            <button id="prev">Previous Page</button>
+            <button id="next">Next Page</button>
+            <button id="last">Last Page</button>
+        </div>
+    </section>
+    <script src="../../test/bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../test/bower_components/underscore/underscore.js"></script>
+    <script src="../../test/bower_components/backbone/backbone.js"></script>
+    <script src="../../src/collections/subset/PaginationSubset.js"></script>
+    <script src="../../src/views/data-binding/CollectionBinding.js"></script>
+    <script src="../../src/ExoSuit.js"></script>
+    <script>
+        var ModelView = ExoSuit.View.extend({
+            render: function() {
+                return this.$el.html( "<tr><td>" + this.model.get( "name" ) + "</td><td>" + this.model.get( "age" ) + "</td></tr>" );
+            }
+        });
+
+        var CollectionView = ExoSuit.View.extend({
+            mixins: [ ExoSuit.Mixins.CollectionBindingMixin ],
+            el: "#subset_collection",
+            modelView: ModelView,
+            overrideRender: true,
+            initialize : function() {
+                this.render();
+            }
+        });
+
+        var PaginationCollection = ExoSuit.Collection.extend({
+            mixins: [ ExoSuit.Mixins.PaginationSubsetMixin ],
+            model: Backbone.Model
+        });
+
+        var fullCollection = new Backbone.Collection([
+            {
+                name: "Bob",
+                age: 30
+            },
+            {
+                name: "Clive",
+                age: 27
+            },
+            {
+                name: "Debra",
+                age: 18
+            },
+            {
+                name: "Edward",
+                age: 45
+            },
+            {
+                name: "Helen",
+                age: 66
+            },
+            {
+                name: "Mary",
+                age: 32
+            },
+            {
+                name: "Matthew",
+                age: 23
+            },
+            {
+                name: "Robert",
+                age: 16
+            },
+            {
+                name: "Steve",
+                age: 25
+            }
+        ]);
+
+        var pagingCollection = new PaginationCollection( null, {
+            parent: fullCollection,
+            pagingState: {
+                perPage: 5
+            }
+        });
+        var pagingView = new CollectionView({
+            collection: pagingCollection
+        });
+
+        function displayFullCollection() {
+            var fullList = fullCollection.map(function( model ) {
+                return "<li>" + model.get( "name" ) + " - " + model.get( "age" ) + " years old</li>";
+            }).join( "" );
+
+            $( "#full_collection" ).html( fullList );
+        }
+
+        function displayFullCollectionSelectList() {
+            var fullList = fullCollection.map(function( model ) {
+                return "<option value='" + model.get( "name" ) + "'>" + model.get( "name" ) + "</li>";
+            }).join( "" );
+
+            $( "#full_coll_list" ).html( fullList );
+        }
+
+        $( "#submit" ).on( "click", function( e ) {
+            e.preventDefault();
+
+            var name = $( "#name" ).val();
+            var age = parseInt( $( "#age" ).val(), 10 );
+
+            if ( name && typeof age === "number" ) {
+                fullCollection.add( { name: name, age: age } );
+            }
+
+            displayFullCollection();
+            displayFullCollectionSelectList();
+        });
+
+        $( "#remove" ).on( "click", function( e ) {
+            e.preventDefault();
+
+            var name = $( "#full_coll_list" ).val();
+
+            var remove = fullCollection.find(function( model ) {
+                return model.get( "name" ) === name;
+            })
+
+            if ( name ) {
+                fullCollection.remove( remove );
+            }
+
+            displayFullCollection();
+            displayFullCollectionSelectList();
+        });
+
+        $( "#items" ).on( "click", function( e ) {
+            e.preventDefault();
+
+            var size = parseInt( $( "#number" ).val(), 10 );
+
+            if ( typeof size === 'number' ) {
+                pagingCollection.howManyPerPage( size );
+            }
+        });
+
+        $( "#first" ).on( "click", function( e ) {
+            e.preventDefault();
+
+            pagingCollection.firstPage();
+        });
+        $( "#prev" ).on( "click", function( e ) {
+            e.preventDefault();
+
+            pagingCollection.previousPage();
+        });
+        $( "#next" ).on( "click", function( e ) {
+            e.preventDefault();
+
+            pagingCollection.nextPage();
+        });
+        $( "#last" ).on( "click", function( e ) {
+            e.preventDefault();
+
+            pagingCollection.lastPage();
+        });
+
+        displayFullCollection();
+        displayFullCollectionSelectList();
+    </script>
+</body>
+</html>
