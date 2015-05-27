@@ -29,6 +29,130 @@
             <input type="submit" id="reorder" value="Reorder Capped Collection" />
         </div>
     </section>
+    <section>
+        <h2>Code</h2>
+        <pre><code>
+            var CappedCollection = ExoSuit.Collection.extend({
+                mixins: [ ExoSuit.Mixins.CappedSubsetMixin ],
+                model: Backbone.Model
+            });
+
+            var fullCollection = new Backbone.Collection([
+                {
+                    name: "Bob"
+                },
+                {
+                    name: "Clive"
+                },
+                {
+                    name: "Debra"
+                },
+                {
+                    name: "Edward"
+                },
+                {
+                    name: "Helen"
+                },
+                {
+                    name: "Mary"
+                },
+                {
+                    name: "Matthew"
+                },
+                {
+                    name: "Robert"
+                },
+                {
+                    name: "Steve"
+                }
+            ]);
+            var cappedCollection = new CappedCollection( null, {
+                parent: fullCollection,
+                limit: 5
+            });
+
+            function displayFullCollection() {
+                var fullList = fullCollection.map(function( model ) {
+                    return "&lt;li&gt;" + model.get( "name" ) + "&lt;/li&gt;";
+                }).join( "" );
+
+                $( "#full_collection" ).html( fullList );
+            }
+
+            function displayFullCollectionSelectList() {
+                var fullList = fullCollection.map(function( model ) {
+                    return "&lt;option value='" + model.get( "name" ) + "'&gt;" + model.get( "name" ) + "&lt;/option&gt;";
+                }).join( "" );
+
+                $( "#full_coll_list" ).html( fullList );
+            }
+
+            function displaySubsetCollection() {
+                var cappedList = cappedCollection.map(function( model ) {
+                    return "&lt;li&gt;" + model.get( "name" ) + "&lt;/li&gt;";
+                }).join( "" );
+
+                $( "#subset_collection" ).html( cappedList );
+            }
+
+            $( "#submit" ).on( "click", function( e ) {
+                e.preventDefault();
+
+                var name = $( "#name" ).val();
+
+                if ( name ) {
+                    fullCollection.add( { name: name } );
+                }
+
+                displayFullCollection();
+                displayFullCollectionSelectList();
+                displaySubsetCollection();
+            });
+
+            $( "#remove" ).on( "click", function( e ) {
+                e.preventDefault();
+
+                var name = $( "#full_coll_list" ).val();
+
+                var remove = fullCollection.find(function( model ) {
+                    return model.get( "name" ) === name;
+                })
+
+                if ( name ) {
+                    fullCollection.remove( remove );
+                }
+
+                displayFullCollection();
+                displayFullCollectionSelectList();
+                displaySubsetCollection();
+            });
+
+            $( "#resize" ).on( "click", function( e ) {
+                e.preventDefault();
+
+                var size = parseInt( $( "#number" ).val(), 10 );
+
+                if ( typeof size === 'number' ) {
+                    cappedCollection.resize( size );
+                }
+
+                displaySubsetCollection();
+            });
+
+            $( "#reorder" ).on( "click", function( e ) {
+                e.preventDefault();
+
+                cappedCollection.reorder();
+
+
+                displaySubsetCollection();
+            });
+
+            displayFullCollection();
+            displayFullCollectionSelectList();
+            displaySubsetCollection();
+        </code></pre>
+    </section>
     <script src="../../test/bower_components/jquery/dist/jquery.js"></script>
     <script src="../../test/bower_components/underscore/underscore.js"></script>
     <script src="../../test/bower_components/backbone/backbone.js"></script>
@@ -84,7 +208,7 @@
 
         function displayFullCollectionSelectList() {
             var fullList = fullCollection.map(function( model ) {
-                return "<option value='" + model.get( "name" ) + "'>" + model.get( "name" ) + "</li>";
+                return "<option value='" + model.get( "name" ) + "'>" + model.get( "name" ) + "</option>";
             }).join( "" );
 
             $( "#full_coll_list" ).html( fullList );

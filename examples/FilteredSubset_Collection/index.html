@@ -28,6 +28,143 @@
             <input type="submit" id="change_age" value="Change Max Age of Filter Function of Filtered Collection">
         </div>
     </section>
+    <section>
+        <pre><code>
+            var maxAge = 35;
+
+            var FilteredCollection = ExoSuit.Collection.extend({
+                mixins: [ ExoSuit.Mixins.FilteredSubsetMixin ],
+                model: Backbone.Model
+            });
+
+            var fullCollection = new Backbone.Collection([
+                {
+                    name: "Bob",
+                    age: 30
+                },
+                {
+                    name: "Clive",
+                    age: 27
+                },
+                {
+                    name: "Debra",
+                    age: 18
+                },
+                {
+                    name: "Edward",
+                    age: 45
+                },
+                {
+                    name: "Helen",
+                    age: 66
+                },
+                {
+                    name: "Mary",
+                    age: 32
+                },
+                {
+                    name: "Matthew",
+                    age: 23
+                },
+                {
+                    name: "Robert",
+                    age: 16
+                },
+                {
+                    name: "Steve",
+                    age: 25
+                }
+            ]);
+            var filteredCollection = new FilteredCollection( null, {
+                parent: fullCollection,
+                filter: function( model ) {
+                    return model.get( "age" ) < maxAge;
+                }
+            });
+
+            function displayFullCollection() {
+                var fullList = fullCollection.map(function( model ) {
+                    return "&lt;li&gt;" + model.get( "name" ) + " - " + model.get( "age" ) + " years old&lt;/li&gt;";
+                }).join( "" );
+
+                $( "#full_collection" ).html( fullList );
+            }
+
+            function displayFullCollectionSelectList() {
+                var fullList = fullCollection.map(function( model ) {
+                    return "&lt;option value='" + model.get( "name" ) + "'&gt;" + model.get( "name" ) + "<&lt;/option&gt;";
+                }).join( "" );
+
+                $( "#full_coll_list" ).html( fullList );
+            }
+
+            function displaySubsetCollection() {
+                var filteredList = filteredCollection.map(function( model ) {
+                    return "&lt;li&gt;" + model.get( "name" ) + " - " + model.get( "age" ) + " years old&lt;/li&gt;";
+                }).join( "" );
+
+                $( "#subset_collection" ).html( filteredList );
+            }
+
+            function displayMaxAge() {
+                $( "#max_age" ).html( maxAge );
+            }
+
+            $( "#submit" ).on( "click", function( e ) {
+                e.preventDefault();
+
+                var name = $( "#name" ).val();
+                var age = parseInt( $( "#age" ).val(), 10 );
+
+                if ( name && typeof age === "number" ) {
+                    fullCollection.add( { name: name, age: age } );
+                }
+
+                displayFullCollection();
+                displayFullCollectionSelectList();
+                displaySubsetCollection();
+            });
+
+            $( "#remove" ).on( "click", function( e ) {
+                e.preventDefault();
+
+                var name = $( "#full_coll_list" ).val();
+
+                var remove = fullCollection.find(function( model ) {
+                    return model.get( "name" ) === name;
+                });
+
+                if ( name ) {
+                    fullCollection.remove( remove );
+                }
+
+                displayFullCollection();
+                displayFullCollectionSelectList();
+                displaySubsetCollection();
+            });
+
+            $( "#change_age" ).on( "click", function( e ) {
+                e.preventDefault();
+
+                var age = parseInt( $( "#change_max_age" ).val(), 10 );
+
+                if ( typeof age === 'number' ) {
+                    maxAge = age;
+                    fullCollection.reset( fullCollection.toJSON() );
+                }
+
+                displayFullCollection();
+                displayFullCollectionSelectList();
+                displayMaxAge();
+                displaySubsetCollection();
+            });
+
+            displayFullCollection();
+            displayFullCollectionSelectList();
+            displayMaxAge();
+            displaySubsetCollection();
+        </code></pre>
+    </section>
     <script src="../../test/bower_components/jquery/dist/jquery.js"></script>
     <script src="../../test/bower_components/underscore/underscore.js"></script>
     <script src="../../test/bower_components/backbone/backbone.js"></script>
@@ -96,7 +233,7 @@
 
         function displayFullCollectionSelectList() {
             var fullList = fullCollection.map(function( model ) {
-                return "<option value='" + model.get( "name" ) + "'>" + model.get( "name" ) + "</li>";
+                return "<option value='" + model.get( "name" ) + "'>" + model.get( "name" ) + "</option>";
             }).join( "" );
 
             $( "#full_coll_list" ).html( fullList );
