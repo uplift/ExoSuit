@@ -56,7 +56,7 @@
 
             // If title and its a function, get return value of the function
             if ( title && _.isFunction( title ) ) {
-                title = title.apply( this );
+                title = title.apply( this, [ args ] );
             }
 
             // Run existing execute function i.e. run route callback

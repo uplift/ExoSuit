@@ -81,6 +81,18 @@
                 expect( stub.calledWith( "Title Returned From Function" ) ).to.be.true;
             });
 
+            it('should pass the route args to the title if it is a function', function() {
+                // stub.restore();
+                stub = sinon.stub( Router.prototype.routeConfig.anotherPage, "title" );
+                var args = [ 3, null ];
+                // Create view
+                var router = new Router();
+                router.execute( function() {}, args, "anotherPage" );
+                expect( stub.called ).to.be.true;
+                expect( stub.callCount ).to.equal( 1 );
+                expect( stub.calledWith( args ) ).to.be.true;
+            });
+
             it('should not call setTitle if old execute function returns false', function() {
                 oldMethodStub.returns( false );
                 // Create view
