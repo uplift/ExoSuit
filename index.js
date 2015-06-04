@@ -10,6 +10,7 @@ var ExoSuit = {
         "FlattenMixin": require( './src/models/flatten/Flatten' ),
         "TransformMixin": require( './src/models/transforms/Transforms' ),
         "GoogleAnalyticsRouteMixin": require( './src/routers/analytics/Google' ),
+        "RouteFilterMixin": require( './src/routers/filters/RouteFilter' ),
         "ParseQueryStringMixin": require( './src/routers/parse/ParseQueryString' ),
         "RouteTitleMixin": require( './src/routers/route-title/RouteTitle' ),
         "CollectionBindingMixin": require( './src/views/data-binding/CollectionBinding' ),
