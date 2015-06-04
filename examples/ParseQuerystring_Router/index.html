@@ -1,0 +1,67 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Parse Querystring Router</title>
+</head>
+<body>
+    <section>
+        <p>Click the route links below to see the URLs querystring parsed as an object. Change the querystring yourself to see the result below.</p>
+        <p>
+            <a href="#">Home</a>
+            <a href="#?q=Test">Test</a>
+            <a href="#?q=Hello&q=World">Hello World</a>
+            <a href="#?a=Foo&b=Bar">Foo Bar</a>
+        </p>
+        <div>
+            <p>The querystring is:-</p>
+            <div id="query"></div>
+        </div>
+    </section>
+    <section>
+        <h2>Code</h2>
+        <pre><code>
+            var QueryRouter = ExoSuit.Router.extend({
+                mixins: [ ExoSuit.Mixins.ParseQueryStringMixin ],
+
+                routes: {
+                    "": "home"
+                },
+
+                initialize: function() {
+                    Backbone.history.start();
+                },
+
+                home: function( qs ) {
+                    $( '#query' ).html( JSON.stringify( qs, null, 4 ) );
+                }
+            });
+
+            var app = new QueryRouter();
+        </code></pre>
+    </section>
+    <script src="../../test/bower_components/jquery/dist/jquery.js"></script>
+    <script src="../../test/bower_components/underscore/underscore.js"></script>
+    <script src="../../test/bower_components/backbone/backbone.js"></script>
+    <script src="../../src/routers/parse/ParseQueryString.js"></script>
+    <script src="../../src/ExoSuit.js"></script>
+    <script>
+        var QueryRouter = ExoSuit.Router.extend({
+            mixins: [ ExoSuit.Mixins.ParseQueryStringMixin ],
+
+            routes: {
+                "": "home"
+            },
+
+            initialize: function() {
+                Backbone.history.start();
+            },
+
+            home: function( qs ) {
+                $( '#query' ).html( JSON.stringify( qs, null, 4 ) );
+            }
+        });
+
+        var app = new QueryRouter();
+    </script>
+</body>
+</html>
