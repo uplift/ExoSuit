@@ -57,7 +57,7 @@ In an AMD environment, load the mixin as you would any other AMD module. You'll 
     });
 
     // My Module
-    define( [ 'bower_components/exosuit/src/models/ExcludeFromJSON' ], function( ExcludeFromJSON ) {
+    define( [ 'exosuit/src/models/ExcludeFromJSON' ], function( ExcludeFromJSON ) {
         // Do something
     });
 
