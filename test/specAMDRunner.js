@@ -24,6 +24,7 @@ if ( window.__karma__ ) {
         'tests/specs/models/flatten/FlattenSpec',
         'tests/specs/models/transforms/TransformsSpec',
         'tests/specs/routers/analytics/GoogleSpec',
+        'tests/specs/routers/filters/RouteFilterSpec',
         'tests/specs/routers/parse/ParseQueryStringSpec',
         'tests/specs/routers/route-title/RouteTitleSpec',
         'tests/specs/views/data-binding/CollectionBindingSpec',
