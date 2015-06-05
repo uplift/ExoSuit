@@ -127,6 +127,10 @@ Transform model data to certain types when they are received and sent to the ser
 
 Fire a Google tracking page event when a new route is fired.
 
+#### Filters
+
+Before, after and leave filters wrapped around your route callback to allow common things like authentication and view cleanup.
+
 #### Parse Querystring
 
 Parse querystring data into an object and pass to the route callback.
