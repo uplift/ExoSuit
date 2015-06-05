@@ -127,13 +127,13 @@ Transform model data to certain types when they are received and sent to the ser
 
 Fire a Google tracking page event when a new route is fired.
 
-#### Filters
-
-Before, after and leave filters wrapped around your route callback to allow common things like authentication and view cleanup.
-
 #### Parse Querystring
 
 Parse querystring data into an object and pass to the route callback.
+
+#### Route Filters
+
+Before, after and leave filters wrapped around your route callback to allow common things like authentication and view cleanup.
 
 #### Route Title
 
@@ -180,6 +180,7 @@ Licensed under the [MIT](http://www.opensource.org/licenses/MIT) license.
 
 # Changelog
 
+**0.4.1** - Add Route Filters mixin.
 **0.4.0** - Fix mixins affected by backbone 1.2.0 release.  
 **0.3.1** - Fix Backbone and Underscore dependencies to 1.1.2 and 1.7.0 respectively for backwards compatibility. For old backbone versions, bugs will be fixed on v0.3 branch but no further updates or new mixins will be maintained for backbone versions lower than 1.2.0.  
 **0.3.0** - Initial Release.  
