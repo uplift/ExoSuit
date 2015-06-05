@@ -18,7 +18,7 @@ A defaultTitle property can be set to cater for pages that don't have a defined 
 
 **Example:**
 
-    var myRouter = Backbone.Router.extend({
+    var myRouter = ExoSuit.Router.extend({
         mixins: [ ExoSuit.Mixins.RouteTitleMixin ],
 
         routes: {
