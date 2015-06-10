@@ -18,6 +18,7 @@ var ExoSuit = {
         "ModelEventsMixin": require( './src/views/events/ModelEvents' ),
         "CollectionEventsMixin": require( './src/views/events/CollectionEvents' ),
         "ViewSwitcherMixin": require( './src/views/layout-manager/ViewSwitcher' ),
+        "BootstrapModalMixin": require( './src/views/modal/BootstrapModal' ),
         "SelectListMixin": require( './src/views/select-list/Select' ),
         "SelectorMixin": require( './src/views/selectors/Selectors' )
     }
