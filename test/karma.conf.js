@@ -19,6 +19,11 @@ module.exports = function(config) {
                 served: true
             },
             {
+                pattern : 'test/bower_components/bootstrap/dist/js/bootstrap.js',
+                included: true,
+                served: true
+            },
+            {
                 pattern : 'test/bower_components/underscore/underscore.js',
                 included: true,
                 served: true

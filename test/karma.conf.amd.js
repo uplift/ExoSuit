@@ -14,6 +14,11 @@ module.exports = function(config) {
                 served: true
             },
             {
+                pattern : 'test/bower_components/bootstrap/dist/js/bootstrap.js',
+                included: false,
+                served: true
+            },
+            {
                 pattern : 'test/bower_components/jquery/dist/jquery.js',
                 included: false,
                 served: true
