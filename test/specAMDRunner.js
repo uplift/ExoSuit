@@ -32,6 +32,7 @@ if ( window.__karma__ ) {
         'tests/specs/views/events/ModelEventsSpec',
         'tests/specs/views/events/CollectionEventsSpec',
         'tests/specs/views/layout-manager/ViewSwitcherSpec',
+        'tests/specs/views/modal/BootstrapModalSpec',
         'tests/specs/views/select-list/SelectSpec',
         'tests/specs/views/selectors/SelectorsSpec',
         'tests/specs/ExoSuitSpec'
@@ -45,12 +46,17 @@ requirejs.config({
     paths: {
         "exosuit"           : ".",
         "jquery"            : "../test/bower_components/jquery/dist/jquery",
+        "bootstrap"         : "../test/bower_components/bootstrap/dist/js/bootstrap",
         "underscore"        : "../test/bower_components/underscore/underscore",
         "backbone"          : "../test/bower_components/backbone/backbone",
         "sinon"             : "../test/bower_components/sinon/index",
         "tests"             : "../test"
     },
     shim: {
+        "bootstrap": {
+            exports: "bootstrap",
+            deps: [ "jquery" ]
+        },
         "sinon": {
             exports: "sinon"
         }
