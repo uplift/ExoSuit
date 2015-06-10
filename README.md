@@ -12,6 +12,8 @@ Compose the bits of functionality you need and create your own base modules to e
 
 **Important:** With the release of Backbone 1.2.0, some changes to ExoSuit were needed, resulting in the current version only supporting 1.2.0. To use ExoSuit with Backbone 1.1.2, please see the changelog at the bottom of the README.
 
+Also as of Backbone 1.2.0, all ExoSuit Mixins rely on a jQuery like interface to be used with Backbone unless otherwise stated in the individual mixin readme.
+
 ## Install
 
 ### Bower
@@ -165,6 +167,10 @@ List callbacks for model events in a hash object on the view. Similar to how DOM
 #### View Switcher
 
 An easy way to switch out views within the same area of the DOM.
+
+#### Bootstrap Modal
+
+An easy way to make a view a Bootstrap modal window.
 
 #### Select List
 
