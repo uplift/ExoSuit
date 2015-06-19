@@ -69,7 +69,7 @@
     "sinon": "^1.10.3"
   },
   "dependencies": {
-    "backbone": "^1.2.0",
+    "backbone": "^1.2.1",
     "bootstrap": "^3.3.4",
     "underscore": "^1.8.3"
   }
